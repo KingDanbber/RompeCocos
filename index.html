@@ -14,7 +14,6 @@
             --bg-edge: #000000;
             --accent-green: #4ade80;
             --accent-orange: #FFA500;
-            --accent-blue: #3498db;
         }
 
         body {
@@ -29,7 +28,7 @@
             color: white;
             user-select: none;
             padding: 20px;
-            box-sizing: border-box;
+            box-sizing: border-box; /* Asegura que el padding no rompa el layout */
         }
 
         h1 {
@@ -67,6 +66,7 @@
             display: flex;
             align-items: flex-start;
             gap: 30px;
+            /* Añadimos un margen inferior para separar del footer */
             margin-bottom: 30px; 
         }
 
@@ -79,16 +79,15 @@
 
         .stats-box {
             background: rgba(0, 0, 0, 0.4);
-            padding: 12px;
+            padding: 15px;
             border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
             width: 140px;
         }
 
-        .stat-label { color: #aaa; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
-        .stat-value { color: var(--frame-color); font-size: 1.4rem; font-weight: bold; display: block; }
-        .record-value { color: var(--accent-orange); font-size: 1rem; margin-top: 5px; }
+        .stat-label { color: #aaa; font-size: 0.9rem; }
+        .stat-value { color: var(--frame-color); font-size: 1.5rem; font-weight: bold; display: block; }
 
         /* MINI PREVIEW */
         .preview-container { text-align: center; }
@@ -167,15 +166,6 @@
         .tile.white { background: linear-gradient(135deg, #ffffff 0%, #dcdcdc 100%); }
         .tile.empty { background: transparent; box-shadow: none; cursor: default; pointer-events: none; }
 
-        /* BOTONES */
-        .btn-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
         .btn-main {
             padding: 12px 30px;
             font-size: 16px;
@@ -188,26 +178,10 @@
             box-shadow: 0 4px 15px rgba(242, 232, 92, 0.4);
             transition: all 0.2s;
             text-transform: uppercase;
+            margin-top: 20px;
         }
         .btn-main:hover { transform: translateY(-2px); filter: brightness(1.1); }
         .btn-main:active { transform: translateY(1px); }
-
-        .btn-share {
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: bold;
-            background: linear-gradient(to bottom, #25D366 0%, #128C7E 100%); /* Color WhatsApp */
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-            transition: all 0.2s;
-            display: none; /* Oculto por defecto */
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-share:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
         #message {
             margin-top: 15px;
@@ -231,30 +205,29 @@
             text-shadow: 0 0 15px rgba(255, 165, 0, 0.6) !important;
             animation: pulse 1s infinite ease-in-out;
         }
-        .new-record {
-            color: #FFD700 !important;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8) !important;
-            font-size: 1.4rem !important;
-        }
 
+        /* --- NUEVO: ESTILOS DEL FOOTER (AUTORÍA) --- */
         .game-footer {
             text-align: center;
             font-size: 0.9rem;
-            color: #aaa;
-            margin-top: auto;
+            color: #aaa; /* Gris sutil */
+            margin-top: auto; /* Empuja hacia abajo si sobra espacio */
             padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Línea sutil separadora */
             width: 100%;
-            max-width: 600px;
+            max-width: 600px; /* Que no sea demasiado ancho */
         }
-        .footer-highlight { color: var(--frame-color); font-weight: bold; }
+        
+        .footer-highlight {
+            color: var(--frame-color); /* Usamos el dorado del juego para los nombres */
+            font-weight: bold;
+        }
 
         @media (max-width: 700px) {
             .game-area { flex-direction: column-reverse; align-items: center; margin-bottom: 20px; }
             .info-panel { flex-direction: row; justify-content: center; width: 100%; }
-            .stats-box { padding: 8px; width: 100px; }
+            .stats-box { padding: 5px; width: 100px; }
             .stat-value { font-size: 1.2rem; }
-            .record-value { font-size: 0.8rem; }
         }
         @media (max-width: 450px) {
             .grid-container {
@@ -263,7 +236,7 @@
             }
             .tile { font-size: 32px; }
             h1 { font-size: 2rem; }
-            .game-footer { font-size: 0.8rem; }
+            .game-footer { font-size: 0.8rem; } /* Footer más pequeño en móvil */
         }
     </style>
 </head>
@@ -288,19 +261,17 @@
     <div class="game-area">
         <div class="info-panel">
             <div class="preview-container">
-                <div class="preview-label">Meta:</div>
+                <div class="preview-label">Meta a lograr:</div>
                 <div id="mini-grid" class="mini-grid"></div>
             </div>
 
             <div class="stats-box">
                 <span class="stat-label">TIEMPO</span>
                 <span id="timer" class="stat-value">00:00</span>
-                <div id="record-time" class="record-value">Récord: --:--</div>
             </div>
             <div class="stats-box">
-                <span class="stat-label">MOVS</span>
+                <span class="stat-label">MOVIMIENTOS</span>
                 <span id="moves" class="stat-value">0</span>
-                <div id="record-moves" class="record-value">Récord: --</div>
             </div>
         </div>
 
@@ -308,20 +279,15 @@
             <div class="game-frame">
                 <div id="grid" class="grid-container"></div>
             </div>
-            
             <div id="message"></div>
-            
-            <div class="btn-container">
-                <button id="share-btn" class="btn-share">
-                    <span>📲 COMPARTIR LOGRO</span>
-                </button>
+            <div style="text-align: center;">
                 <button id="shuffle-btn" class="btn-main">Reiniciar Juego</button>
             </div>
         </div>
     </div>
 
     <footer class="game-footer">
-        <p>Diseñado y Desarrollado por <span class="footer-highlight">DanKing92</span></p>
+        <p>Diseñado y Desarrollado por <span class="footer-highlight">[TU NOMBRE AQUÍ]</span></p>
         <p>Con asistencia técnica de <span class="footer-highlight">IA de Google</span></p>
         <p>© 2023 Proyecto Personal</p>
     </footer>
@@ -331,29 +297,69 @@
     const miniGridElement = document.getElementById('mini-grid');
     const messageElement = document.getElementById('message');
     const shuffleBtn = document.getElementById('shuffle-btn');
-    const shareBtn = document.getElementById('share-btn'); // Nuevo botón
     const modeSelector = document.getElementById('mode-selector');
     const movesElement = document.getElementById('moves');
     const timerElement = document.getElementById('timer');
-    const recordTimeElement = document.getElementById('record-time'); // Nuevo
-    const recordMovesElement = document.getElementById('record-moves'); // Nuevo
-    
     const GRID_SIZE = 4;
 
     const MODES = {
-        horizontal: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0],
-        vertical: [1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 0],
-        imposible: [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0],
-        caracol: [1, 2, 3, 4, 12, 13, 14, 5, 11, 0, 15, 6, 10, 9, 8, 7],
-        diagonal: [1, 3, 6, 10, 2, 5, 9, 13, 4, 8, 12, 15, 7, 11, 14, 0],
-        serpiente: [1, 2, 3, 4, 8, 7, 6, 5, 9, 10, 11, 12, 0, 15, 14, 13],
-        impares_pares: [1, 3, 5, 7, 9, 11, 13, 15, 2, 4, 6, 8, 10, 12, 14, 0],
-        zigzag_col: [1, 8, 9, 0, 2, 7, 10, 15, 3, 6, 11, 14, 4, 5, 12, 13]
+        horizontal: [
+            1, 2, 3, 4,
+            5, 6, 7, 8, 
+            9, 10, 11, 12, 
+            13, 14, 15, 0
+        ],
+        vertical: [
+            1, 5, 9, 13, 
+            2, 6, 10, 14, 
+            3, 7, 11, 15, 
+            4, 8, 12, 0
+        ],
+        imposible: [
+            15, 14, 13, 12, 
+            11, 10, 9, 8, 
+            7, 6, 5, 4, 
+            3, 2, 1, 0
+        ],
+        caracol: [
+            1, 2, 3, 4, 
+            12, 13, 14, 5, 
+            11, 0, 15, 6, 
+            10, 9, 8, 7
+        ],
+        diagonal: [
+            1, 3, 6, 10, 
+            2, 5, 9, 13, 
+            4, 8, 12, 15, 
+            7, 11, 14, 0
+        ],
+        serpiente: [
+            1, 2, 3, 4,
+            8, 7, 6, 5,
+            9, 10, 11, 12,
+            0, 15, 14, 13
+        ],
+        impares_pares: [
+            1, 3, 5, 7,
+            9, 11, 13, 15,
+            2, 4, 6, 8,
+            10, 12, 14, 0
+        ],
+        zigzag_col: [
+            1, 8, 9, 0,
+            2, 7, 10, 15,
+            3, 6, 11, 14,
+            4, 5, 12, 13
+        ]
     };
 
     const ENCOURAGEMENT_PHRASES = [
-        "¡Ya casi!", "¡Solo unos pasos más!", "¡Estás muy cerca!", 
-        "¡Venga, tú puedes!", "¡Lo tienes en la bolsa!", "¡Un último esfuerzo!"
+        "¡Ya casi!", 
+        "¡Solo unos pasos más!", 
+        "¡Estás muy cerca!", 
+        "¡Venga, tú puedes!", 
+        "¡Lo tienes en la bolsa!",
+        "¡Un último esfuerzo!"
     ];
 
     let currentModeName = 'horizontal';
@@ -368,7 +374,6 @@
     let audioCtx;
     let lastEncouragementIndex = -1; 
 
-    // --- FUNCIONES DE SONIDO ---
     function playSound(type) {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -398,52 +403,6 @@
         }
     }
 
-    // --- FUNCIONES DE ALMACENAMIENTO (RECORDS) ---
-    function getStorageKey(metric) {
-        return `puzzle15_${currentModeName}_${metric}`;
-    }
-
-    function loadRecords() {
-        const bestTime = localStorage.getItem(getStorageKey('time'));
-        const bestMoves = localStorage.getItem(getStorageKey('moves'));
-        
-        if (bestTime) {
-            const mins = Math.floor(bestTime / 60).toString().padStart(2, '0');
-            const secs = (bestTime % 60).toString().padStart(2, '0');
-            recordTimeElement.textContent = `Récord: ${mins}:${secs}`;
-        } else {
-            recordTimeElement.textContent = `Récord: --:--`;
-        }
-
-        if (bestMoves) {
-            recordMovesElement.textContent = `Récord: ${bestMoves}`;
-        } else {
-            recordMovesElement.textContent = `Récord: --`;
-        }
-    }
-
-    function saveRecords() {
-        let isNewRecord = false;
-        
-        // Revisar tiempo
-        const currentBestTime = localStorage.getItem(getStorageKey('time'));
-        if (!currentBestTime || secondsElapsed < parseInt(currentBestTime)) {
-            localStorage.setItem(getStorageKey('time'), secondsElapsed);
-            isNewRecord = true;
-        }
-
-        // Revisar movimientos
-        const currentBestMoves = localStorage.getItem(getStorageKey('moves'));
-        if (!currentBestMoves || moves < parseInt(currentBestMoves)) {
-            localStorage.setItem(getStorageKey('moves'), moves);
-            isNewRecord = true;
-        }
-
-        loadRecords(); // Actualizar UI
-        return isNewRecord;
-    }
-
-    // --- LOGICA TIMER Y MOVES ---
     function startTimer() {
         if (isTimerRunning) return;
         isTimerRunning = true;
@@ -473,8 +432,6 @@
         isTimerRunning = false;
         messageElement.textContent = "";
         messageElement.className = "";
-        shareBtn.style.display = "none"; // Ocultar botón compartir
-        loadRecords(); // Cargar récords del modo actual
     }
 
     function getColorClass(number) {
@@ -540,23 +497,70 @@
         if (wrongTiles === 0) {
             stopTimer();
             isGameActive = false;
-            
-            // Guardar récord y verificar si es nuevo
-            const isNewRecord = saveRecords();
-            
             const prettyModeName = currentModeName.replace('_', ' ').toUpperCase();
-            
-            if (isNewRecord) {
-                messageElement.textContent = `¡NUEVO RÉCORD EN ${prettyModeName}! 🏆`;
-                messageElement.className = "new-record";
-            } else {
-                messageElement.textContent = `¡MODO ${prettyModeName} COMPLETADO!`;
-                messageElement.className = "";
-                messageElement.style.color = "#FFD700";
-            }
-            
+            messageElement.textContent = `¡MODO ${prettyModeName} COMPLETADO!`;
+            messageElement.className = "";
+            messageElement.style.color = "#FFD700";
             playSound('win');
-            shareBtn.style.display = "flex"; // Mostrar botón compartir
         } 
         else if (wrongTiles <= 4) {
-            if (!messageElement.classList.contains('enc
+            if (!messageElement.classList.contains('encouraging') || Math.random() > 0.8) {
+                let randomIdx;
+                do {
+                    randomIdx = Math.floor(Math.random() * ENCOURAGEMENT_PHRASES.length);
+                } while (randomIdx === lastEncouragementIndex);
+                
+                lastEncouragementIndex = randomIdx;
+                messageElement.textContent = ENCOURAGEMENT_PHRASES[randomIdx];
+                messageElement.className = "encouraging";
+            }
+        } 
+        else {
+            messageElement.textContent = "";
+            messageElement.className = "";
+        }
+    }
+
+    function shuffleBoard() {
+        messageElement.textContent = "Mezclando...";
+        messageElement.className = "";
+        resetStats();
+        gameState = [...targetState];
+        let emptyIdx = gameState.indexOf(0);
+
+        setTimeout(() => {
+            for (let i = 0; i < 350; i++) {
+                const possibleMoves = [];
+                const row = Math.floor(emptyIdx / GRID_SIZE);
+                const col = emptyIdx % GRID_SIZE;
+
+                if (row > 0) possibleMoves.push(emptyIdx - GRID_SIZE);
+                if (row < GRID_SIZE - 1) possibleMoves.push(emptyIdx + GRID_SIZE);
+                if (col > 0) possibleMoves.push(emptyIdx - 1);
+                if (col < GRID_SIZE - 1) possibleMoves.push(emptyIdx + 1);
+
+                const randomMoveIdx = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+                [gameState[emptyIdx], gameState[randomMoveIdx]] = [gameState[randomMoveIdx], gameState[emptyIdx]];
+                emptyIdx = randomMoveIdx;
+            }
+            messageElement.textContent = "";
+            renderGrid();
+        }, 50);
+    }
+
+    function changeMode() {
+        currentModeName = modeSelector.value;
+        targetState = MODES[currentModeName];
+        renderMiniPreview();
+        shuffleBoard();
+    }
+
+    shuffleBtn.addEventListener('click', shuffleBoard);
+    modeSelector.addEventListener('change', changeMode);
+
+    renderMiniPreview();
+    shuffleBoard();
+
+</script>
+</body>
+</html>
