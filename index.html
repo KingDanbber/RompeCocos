@@ -54,7 +54,6 @@
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* Estilos para Inputs y Selects */
         select, input[type="text"] {
             padding: 10px 15px;
             border-radius: 8px;
@@ -66,20 +65,14 @@
         }
         
         input[type="text"] {
-            width: 120px;
+            width: 140px;
             text-align: center;
             color: var(--accent-orange);
             font-weight: bold;
         }
-        
-        input[type="text"]::placeholder {
-            color: #777;
-            font-weight: normal;
-        }
+        input[type="text"]::placeholder { color: #777; font-weight: normal; }
 
-        label { font-size: 0.9rem; color: #ccc; }
-
-        /* --- BARRA DE ESTADÍSTICAS Y PREVIEW --- */
+        /* --- JUEGO --- */
         .game-area {
             display: flex;
             align-items: flex-start;
@@ -105,16 +98,8 @@
 
         .stat-label { color: #aaa; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
         .stat-value { color: var(--frame-color); font-size: 1.4rem; font-weight: bold; display: block; }
-        
-        /* Estilo para mostrar quién tiene el récord */
-        .record-holder {
-            color: var(--accent-orange); 
-            font-size: 0.8rem; 
-            margin-top: 2px;
-            font-style: italic;
-        }
+        .record-holder { color: var(--accent-orange); font-size: 0.8rem; margin-top: 2px; font-style: italic; }
         .record-value { color: #fff; font-size: 0.9rem; margin-top: 5px; }
-
 
         /* MINI PREVIEW */
         .preview-container { text-align: center; }
@@ -139,21 +124,19 @@
             font-weight: bold;
             color: #333;
             border-radius: 1px;
+            width: 100%; height: 100%;
         }
         .mini-tile.red { background: var(--tile-bg-red); color: white; }
         .mini-tile.white { background: var(--tile-bg-white); }
-        .mini-tile.empty { background: transparent; }
 
-        /* --- TABLERO PRINCIPAL --- */
+        /* TABLERO */
         .game-frame {
             background-color: var(--frame-color);
             padding: 15px;
             border-radius: 12px;
-            box-shadow: 
-                0 20px 50px rgba(0,0,0,0.5),
-                inset 0 -5px 10px rgba(0,0,0,0.2),
-                inset 0 5px 10px rgba(255,255,255,0.4);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 -5px 10px rgba(0,0,0,0.2), inset 0 5px 10px rgba(255,255,255,0.4);
             border: 1px solid #bda835;
+            display: inline-block; /* Importante para que no colapse */
         }
 
         .grid-container {
@@ -179,10 +162,7 @@
             color: var(--number-color);
             cursor: pointer;
             border-radius: 2px;
-            box-shadow: 
-                inset 2px 2px 5px rgba(255,255,255,0.4),
-                inset -2px -2px 5px rgba(0,0,0,0.4),
-                2px 2px 4px rgba(0,0,0,0.4);
+            box-shadow: inset 2px 2px 5px rgba(255,255,255,0.4), inset -2px -2px 5px rgba(0,0,0,0.4), 2px 2px 4px rgba(0,0,0,0.4);
             transition: transform 0.1s;
             text-shadow: 1px 1px 0px rgba(0,0,0,0.8);
             box-sizing: border-box;
@@ -222,7 +202,7 @@
             padding: 10px 20px;
             font-size: 14px;
             font-weight: bold;
-            background: linear-gradient(to bottom, #25D366 0%, #128C7E 100%); /* Color WhatsApp */
+            background: linear-gradient(to bottom, #25D366 0%, #128C7E 100%);
             color: white;
             border: none;
             border-radius: 50px;
@@ -244,44 +224,21 @@
             font-size: 20px;
             text-align: center;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-            transition: color 0.3s ease;
         }
+        .new-record { color: #FFD700 !important; text-shadow: 0 0 20px rgba(255, 215, 0, 0.8) !important; font-size: 1.4rem !important; }
         
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        .encouraging {
-            color: var(--accent-orange) !important;
-            text-shadow: 0 0 15px rgba(255, 165, 0, 0.6) !important;
-            animation: pulse 1s infinite ease-in-out;
-        }
-        .new-record {
-            color: #FFD700 !important;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8) !important;
-            font-size: 1.4rem !important;
-        }
-
         .game-footer {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #aaa;
-            margin-top: auto;
-            padding-top: 20px;
+            text-align: center; font-size: 0.9rem; color: #aaa;
+            margin-top: auto; padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            width: 100%;
-            max-width: 600px;
+            width: 100%; max-width: 600px;
         }
         .footer-highlight { color: var(--frame-color); font-weight: bold; }
 
         @media (max-width: 700px) {
             .game-area { flex-direction: column-reverse; align-items: center; margin-bottom: 20px; }
             .info-panel { flex-direction: row; justify-content: center; width: 100%; }
-            .stats-box { padding: 8px; width: 100px; }
-            .stat-value { font-size: 1.2rem; }
-            .record-value { font-size: 0.8rem; }
-            .top-controls { flex-direction: column; gap: 10px; }
+            .top-controls { flex-direction: column; }
         }
         @media (max-width: 450px) {
             .grid-container {
@@ -290,7 +247,6 @@
             }
             .tile { font-size: 32px; }
             h1 { font-size: 2rem; }
-            .game-footer { font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -300,9 +256,8 @@
 
     <div class="top-controls">
         <div>
-            <input type="text" id="player-nickname" placeholder="Tu Nickname" maxlength="10">
+            <input type="text" id="player-nickname" placeholder="Tu Nickname" maxlength="12">
         </div>
-
         <div>
             <select id="mode-selector">
                 <option value="horizontal">➡️ Horizontal (Clásico)</option>
@@ -357,10 +312,11 @@
     <footer class="game-footer">
         <p>Diseñado y Desarrollado por <span class="footer-highlight">DanKing92</span></p>
         <p>Con asistencia técnica de <span class="footer-highlight">IA de Google</span></p>
-        <p>© 2025 Proyecto Personal</p>
+        <p>© 2023 Proyecto Personal</p>
     </footer>
 
 <script>
+    // Referencias DOM
     const gridElement = document.getElementById('grid');
     const miniGridElement = document.getElementById('mini-grid');
     const messageElement = document.getElementById('message');
@@ -370,8 +326,6 @@
     const movesElement = document.getElementById('moves');
     const timerElement = document.getElementById('timer');
     const nicknameInput = document.getElementById('player-nickname');
-    
-    // Elementos de Récord
     const recordTimeElement = document.getElementById('record-time');
     const recordTimeHolderElement = document.getElementById('record-time-holder');
     const recordMovesElement = document.getElementById('record-moves');
@@ -390,15 +344,11 @@
         zigzag_col: [1, 8, 9, 0, 2, 7, 10, 15, 3, 6, 11, 14, 4, 5, 12, 13]
     };
 
-    const ENCOURAGEMENT_PHRASES = [
-        "¡Ya casi!", "¡Solo unos pasos más!", "¡Estás muy cerca!", 
-        "¡Venga, tú puedes!", "¡Lo tienes en la bolsa!", "¡Un último esfuerzo!"
-    ];
+    const ENCOURAGEMENT_PHRASES = ["¡Ya casi!", "¡Solo unos pasos más!", "¡Estás muy cerca!", "¡Venga, tú puedes!", "¡Lo tienes en la bolsa!"];
 
     let currentModeName = 'horizontal';
     let targetState = [...MODES.horizontal];
     let gameState = [...targetState];
-
     let moves = 0;
     let timerInterval = null;
     let secondsElapsed = 0;
@@ -407,57 +357,51 @@
     let audioCtx;
     let lastEncouragementIndex = -1; 
 
-    // --- CARGAR NICKNAME GUARDADO ---
-    // Si el usuario ya puso su nombre antes, lo recordamos
-    const savedNickname = localStorage.getItem('puzzle15_last_nickname');
-    if (savedNickname) {
-        nicknameInput.value = savedNickname;
+    // --- ALMACENAMIENTO SEGURO (Crash-Proof) ---
+    // Estas funciones envuelven localStorage en try-catch para evitar que el juego se rompa si está bloqueado.
+    function safeGetItem(key) {
+        try { return localStorage.getItem(key); } catch (e) { return null; }
     }
+    function safeSetItem(key, value) {
+        try { localStorage.setItem(key, value); } catch (e) { /* Fallo silencioso */ }
+    }
+
+    // Cargar Nickname al inicio
+    const savedNickname = safeGetItem('puzzle15_last_nickname');
+    if (savedNickname) nicknameInput.value = savedNickname;
     
-    // Guardar nickname cada vez que cambia
     nicknameInput.addEventListener('input', () => {
-        localStorage.setItem('puzzle15_last_nickname', nicknameInput.value);
+        safeSetItem('puzzle15_last_nickname', nicknameInput.value);
     });
 
-    // --- FUNCIONES DE SONIDO ---
+    // --- SONIDO ---
     function playSound(type) {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
+        try {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
 
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-
-        if (type === 'click') {
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.1);
-            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.1);
-        } else if (type === 'win') {
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-            osc.frequency.setValueAtTime(554, audioCtx.currentTime + 0.1);
-            osc.frequency.setValueAtTime(659, audioCtx.currentTime + 0.2);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.5);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.5);
-        }
+            if (type === 'click') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(300, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+            } else if (type === 'win') {
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.setValueAtTime(554, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.5);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+            }
+        } catch(e) { /* Sin audio si falla el contexto */ }
     }
 
-    // --- FUNCIONES DE ALMACENAMIENTO (RECORDS CON NOMBRE) ---
-    function getStorageKey(metric) {
-        return `puzzle15_${currentModeName}_${metric}`;
-    }
+    // --- LOGICA RECORDS ---
+    function getStorageKey(metric) { return `puzzle15_${currentModeName}_${metric}`; }
 
     function loadRecords() {
-        // Cargar Tiempo
-        const bestTime = localStorage.getItem(getStorageKey('time'));
-        const bestTimeHolder = localStorage.getItem(getStorageKey('time_holder')) || "Anónimo";
+        const bestTime = safeGetItem(getStorageKey('time'));
+        const bestTimeHolder = safeGetItem(getStorageKey('time_holder')) || "Anónimo";
         
         if (bestTime) {
             const mins = Math.floor(bestTime / 60).toString().padStart(2, '0');
@@ -469,9 +413,8 @@
             recordTimeHolderElement.textContent = "";
         }
 
-        // Cargar Movimientos
-        const bestMoves = localStorage.getItem(getStorageKey('moves'));
-        const bestMovesHolder = localStorage.getItem(getStorageKey('moves_holder')) || "Anónimo";
+        const bestMoves = safeGetItem(getStorageKey('moves'));
+        const bestMovesHolder = safeGetItem(getStorageKey('moves_holder')) || "Anónimo";
 
         if (bestMoves) {
             recordMovesElement.textContent = `Récord: ${bestMoves}`;
@@ -486,19 +429,17 @@
         let isNewRecord = false;
         const playerName = nicknameInput.value.trim() || "Anónimo";
         
-        // Revisar tiempo
-        const currentBestTime = localStorage.getItem(getStorageKey('time'));
+        const currentBestTime = safeGetItem(getStorageKey('time'));
         if (!currentBestTime || secondsElapsed < parseInt(currentBestTime)) {
-            localStorage.setItem(getStorageKey('time'), secondsElapsed);
-            localStorage.setItem(getStorageKey('time_holder'), playerName); // Guardar nombre
+            safeSetItem(getStorageKey('time'), secondsElapsed);
+            safeSetItem(getStorageKey('time_holder'), playerName);
             isNewRecord = true;
         }
 
-        // Revisar movimientos
-        const currentBestMoves = localStorage.getItem(getStorageKey('moves'));
+        const currentBestMoves = safeGetItem(getStorageKey('moves'));
         if (!currentBestMoves || moves < parseInt(currentBestMoves)) {
-            localStorage.setItem(getStorageKey('moves'), moves);
-            localStorage.setItem(getStorageKey('moves_holder'), playerName); // Guardar nombre
+            safeSetItem(getStorageKey('moves'), moves);
+            safeSetItem(getStorageKey('moves_holder'), playerName);
             isNewRecord = true;
         }
 
@@ -506,7 +447,7 @@
         return isNewRecord;
     }
 
-    // --- LOGICA DEL JUEGO ---
+    // --- GAME LOOP ---
     function startTimer() {
         if (isTimerRunning) return;
         isTimerRunning = true;
@@ -521,29 +462,19 @@
         }, 1000);
     }
 
-    function stopTimer() {
-        isTimerRunning = false;
-        clearInterval(timerInterval);
-    }
+    function stopTimer() { isTimerRunning = false; clearInterval(timerInterval); }
 
     function resetStats() {
         stopTimer();
-        moves = 0;
-        secondsElapsed = 0;
-        movesElement.textContent = "0";
-        timerElement.textContent = "00:00";
-        isGameActive = true;
-        isTimerRunning = false;
-        messageElement.textContent = "";
-        messageElement.className = "";
+        moves = 0; secondsElapsed = 0;
+        movesElement.textContent = "0"; timerElement.textContent = "00:00";
+        isGameActive = true; isTimerRunning = false;
+        messageElement.textContent = ""; messageElement.className = "";
         shareBtn.style.display = "none";
         loadRecords(); 
     }
 
-    function getColorClass(number) {
-        if (number === 0) return 'empty';
-        return (number % 2 === 0) ? 'red' : 'white';
-    }
+    function getColorClass(number) { return (number === 0) ? 'empty' : (number % 2 === 0 ? 'red' : 'white'); }
 
     function renderGrid() {
         gridElement.innerHTML = '';
@@ -554,3 +485,37 @@
                 tile.textContent = number;
                 tile.addEventListener('click', () => handleTileClick(index));
             }
+            gridElement.appendChild(tile);
+        });
+    }
+
+    function renderMiniPreview() {
+        miniGridElement.innerHTML = '';
+        targetState.forEach(number => {
+            const tile = document.createElement('div');
+            tile.classList.add('mini-tile', getColorClass(number));
+            if (number !== 0) tile.textContent = number;
+            miniGridElement.appendChild(tile);
+        });
+    }
+
+    function handleTileClick(clickedIndex) {
+        if (!isGameActive) return;
+        const emptyIndex = gameState.indexOf(0);
+        if (isAdjacent(clickedIndex, emptyIndex)) {
+            if (!isTimerRunning) startTimer();
+            [gameState[clickedIndex], gameState[emptyIndex]] = [gameState[emptyIndex], gameState[clickedIndex]];
+            moves++; movesElement.textContent = moves;
+            playSound('click'); renderGrid(); checkGameStatus();
+        }
+    }
+
+    function isAdjacent(idx1, idx2) {
+        const row1 = Math.floor(idx1 / GRID_SIZE); const col1 = idx1 % GRID_SIZE;
+        const row2 = Math.floor(idx2 / GRID_SIZE); const col2 = idx2 % GRID_SIZE;
+        return (row1 === row2 && Math.abs(col1 - col2) === 1) || (col1 === col2 && Math.abs(row1 - row2) === 1);
+    }
+
+    function checkGameStatus() {
+        let wrongTiles = 0;
+        
