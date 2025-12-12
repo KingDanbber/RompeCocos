@@ -19,7 +19,6 @@
             --tile-2-text: #cfa942;
             --accent-color: #4ade80;
             
-            /* Variable para tamaño dinámico de fichas */
             --grid-size: 4; 
         }
 
@@ -71,7 +70,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            /* Quitamos el centrado forzoso vertical en general para evitar cortes en móvil */
+            justify-content: center; 
             min-height: 100vh;
             margin: 0;
             color: white;
@@ -145,23 +145,21 @@
 
         .stats-box {
             background: rgba(0, 0, 0, 0.4);
-            padding: 15px;
+            padding: 10px;
             border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
-            width: 140px;
+            width: 120px; /* Un poco más compacto */
         }
 
-        .stat-label { color: #aaa; font-size: 0.9rem; }
-        .stat-value { color: var(--accent-color); font-size: 1.5rem; font-weight: bold; display: block; }
+        .stat-label { color: #aaa; font-size: 0.8rem; }
+        .stat-value { color: var(--accent-color); font-size: 1.3rem; font-weight: bold; display: block; }
 
         .preview-container { text-align: center; }
         .preview-label { margin-bottom: 5px; color: #ddd; font-size: 0.9rem; }
         
-        /* Mini Grid dinámico */
         .mini-grid {
             display: grid;
-            /* Usamos la variable --grid-size para configurar columnas */
             grid-template-columns: repeat(var(--grid-size), 1fr);
             grid-template-rows: repeat(var(--grid-size), 1fr);
             gap: 1px;
@@ -169,8 +167,8 @@
             padding: 2px;
             border-radius: 4px;
             border: 1px solid #555;
-            width: 100px;
-            height: 100px;
+            width: 80px; /* Más compacto para móvil */
+            height: 80px;
         }
 
         .mini-tile {
@@ -197,7 +195,6 @@
 
         .grid-container {
             display: grid;
-            /* TAMAÑO DINÁMICO: Calcula el tamaño de celda basado en el total disponible */
             grid-template-columns: repeat(var(--grid-size), 80px);
             grid-template-rows: repeat(var(--grid-size), 80px);
             gap: 4px;
@@ -210,7 +207,6 @@
         .tile {
             width: 100%; height: 100%;
             display: flex; justify-content: center; align-items: center;
-            /* Tamaño de fuente ajustable según el grid */
             font-size: calc(160px / var(--grid-size)); 
             font-family: "Times New Roman", serif; font-weight: 900;
             cursor: pointer; border-radius: 2px;
@@ -261,21 +257,40 @@
         }
         .footer-highlight { color: var(--accent-color); font-weight: bold; }
 
-        /* Ajustes responsivos para tamaños de grid grandes en móviles */
+        /* --- RESPONSIVIDAD MÓVIL OPTIMIZADA --- */
         @media (max-width: 450px) {
             .grid-container {
-                /* Forzamos que quepa en pantalla de móvil */
+                /* Ajuste dinámico para que no se salga de la pantalla */
                 grid-template-columns: repeat(var(--grid-size), 1fr);
                 grid-template-rows: repeat(var(--grid-size), 1fr);
-                width: 320px;
-                height: 320px;
+                width: 90vw; /* Usa el 90% del ancho de la pantalla */
+                height: 90vw; /* Mantén proporción cuadrada */
+                max-width: 350px;
+                max-height: 350px;
             }
-            .tile { font-size: calc(120px / var(--grid-size)); } /* Fuente más pequeña en móvil */
+            .tile { font-size: calc(120px / var(--grid-size)); }
+            h1 { font-size: 2rem; margin-bottom: 10px; }
         }
 
-        @media (max-width: 700px) {
-            .game-area { flex-direction: column-reverse; align-items: center; margin-bottom: 20px; }
-            .info-panel { flex-direction: row; justify-content: center; width: 100%; }
+        @media (max-width: 800px) {
+            /* Alineación en móvil: Arriba hacia abajo */
+            body { justify-content: flex-start; padding-top: 30px; height: auto; }
+            
+            .game-area { 
+                flex-direction: column; /* Columna normal, NO reverse */
+                align-items: center; 
+                margin-bottom: 20px; 
+                gap: 20px;
+            }
+            
+            /* Panel de información (Minimapa y Stats) arriba del juego */
+            .info-panel { 
+                flex-direction: row; 
+                justify-content: center; 
+                width: 100%; 
+                gap: 15px;
+            }
+            
             .top-controls { flex-direction: column; width: 100%; box-sizing: border-box; }
             .control-group { width: 100%; }
         }
@@ -324,7 +339,7 @@
                 <span id="timer" class="stat-value">00:00</span>
             </div>
             <div class="stats-box">
-                <span class="stat-label">MOVIMIENTOS</span>
+                <span class="stat-label">MOVS</span>
                 <span id="moves" class="stat-value">0</span>
             </div>
         </div>
@@ -353,11 +368,10 @@
     const shuffleBtn = document.getElementById('shuffle-btn');
     const modeSelector = document.getElementById('mode-selector');
     const themeSelector = document.getElementById('theme-selector');
-    const sizeSelector = document.getElementById('size-selector'); // NUEVO
+    const sizeSelector = document.getElementById('size-selector'); 
     const movesElement = document.getElementById('moves');
     const timerElement = document.getElementById('timer');
     
-    // Variables dinámicas
     let currentGridSize = 4;
     let gameState = [];
     let targetState = [];
@@ -372,8 +386,6 @@
 
     const ENCOURAGEMENT_PHRASES = ["¡Ya casi!", "¡Solo unos pasos más!", "¡Estás muy cerca!", "¡Venga, tú puedes!", "¡Lo tienes en la bolsa!"];
 
-    // --- GENERADOR DE MODOS DINÁMICO ---
-    // En lugar de hardcodear todo, generamos los arrays matemáticamente según el tamaño
     function generateTargetState(size, mode) {
         let arr = [];
         const totalTiles = size * size;
@@ -383,7 +395,6 @@
             arr.push(0);
         } 
         else if (mode === 'vertical') {
-            // Generar matriz vertical
             let matrix = Array(size).fill().map(() => Array(size).fill(0));
             let counter = 1;
             for (let col = 0; col < size; col++) {
@@ -397,7 +408,6 @@
             for(let i=totalTiles-1; i>=1; i--) arr.push(i);
             arr.push(0);
         }
-        // Modos exclusivos de 4x4 (Hardcodeados para mantener la complejidad específica)
         else if (size === 4) {
             if (mode === 'caracol') return [1, 2, 3, 4, 12, 13, 14, 5, 11, 0, 15, 6, 10, 9, 8, 7];
             if (mode === 'diagonal') return [1, 3, 6, 10, 2, 5, 9, 13, 4, 8, 12, 15, 7, 11, 14, 0];
@@ -405,29 +415,22 @@
             if (mode === 'impares_pares') return [1, 3, 5, 7, 9, 11, 13, 15, 2, 4, 6, 8, 10, 12, 14, 0];
             if (mode === 'zigzag_col') return [1, 8, 9, 0, 2, 7, 10, 15, 3, 6, 11, 14, 4, 5, 12, 13];
         }
-        
         return arr;
     }
 
-    // --- ACTUALIZAR SELECTOR DE MODOS ---
     function updateModeOptions() {
         const size = parseInt(sizeSelector.value);
         modeSelector.innerHTML = '';
-        
-        // Modos comunes
         const commonModes = [
             {val: 'horizontal', text: '➡️ Horizontal (Clásico)'},
             {val: 'vertical', text: '⬇️ Vertical'},
             {val: 'imposible', text: '⚠️ Imposible (Inverso)'}
         ];
-
         commonModes.forEach(m => {
             let opt = document.createElement('option');
             opt.value = m.val; opt.textContent = m.text;
             modeSelector.appendChild(opt);
         });
-
-        // Modos especiales (SOLO 4x4)
         if (size === 4) {
             const specialModes = [
                 {val: 'caracol', text: '🐌 Caracol (Espiral)'},
@@ -442,13 +445,10 @@
                 modeSelector.appendChild(opt);
             });
         }
-        
-        // Resetear selección
         modeSelector.value = 'horizontal';
         currentModeName = 'horizontal';
     }
 
-    // --- SONIDO ---
     function playSound(type) {
         try {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -457,7 +457,6 @@
             const gain = audioCtx.createGain();
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-
             if (type === 'click') {
                 osc.type = 'sine'; osc.frequency.setValueAtTime(300, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.1);
                 gain.gain.setValueAtTime(0.3, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
@@ -470,7 +469,6 @@
         } catch(e) {}
     }
 
-    // --- LOGICA JUEGO ---
     function startTimer() {
         if (isTimerRunning) return;
         isTimerRunning = true; secondsElapsed = 0; timerElement.textContent = "00:00";
@@ -556,12 +554,9 @@
     function shuffleBoard() {
         messageElement.textContent = "Mezclando..."; messageElement.className = "";
         resetStats();
-        
-        // Obtener objetivo basado en tamaño y modo actual
         targetState = generateTargetState(currentGridSize, currentModeName);
         gameState = [...targetState];
         let emptyIdx = gameState.indexOf(0);
-
         setTimeout(() => {
             for (let i = 0; i < 350; i++) {
                 const possibleMoves = [];
@@ -578,33 +573,19 @@
         }, 50);
     }
 
-    // --- EVENTOS ---
-    themeSelector.addEventListener('change', (e) => {
-        document.body.setAttribute('data-theme', e.target.value);
-    });
-
-    modeSelector.addEventListener('change', (e) => {
-        currentModeName = e.target.value;
-        renderMiniPreview();
-        shuffleBoard();
-    });
-
+    themeSelector.addEventListener('change', (e) => { document.body.setAttribute('data-theme', e.target.value); });
+    modeSelector.addEventListener('change', (e) => { currentModeName = e.target.value; renderMiniPreview(); shuffleBoard(); });
     sizeSelector.addEventListener('change', (e) => {
         currentGridSize = parseInt(e.target.value);
-        // Actualizar variable CSS para el grid
         document.documentElement.style.setProperty('--grid-size', currentGridSize);
-        // Actualizar lista de modos disponibles (filtro 4x4)
         updateModeOptions();
-        // Regenerar mini grid y tablero
         targetState = generateTargetState(currentGridSize, 'horizontal');
         renderMiniPreview();
         shuffleBoard();
     });
-
     shuffleBtn.addEventListener('click', shuffleBoard);
 
-    // INICIO
-    updateModeOptions(); // Cargar modos iniciales (4x4)
+    updateModeOptions();
     document.documentElement.style.setProperty('--grid-size', 4);
     renderMiniPreview();
     shuffleBoard();
