@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RompeCocos</title>
+    <title>RompeCocos - Puzzle</title>
     <style>
         /* --- VARIABLES POR DEFECTO (TEMA CLÁSICO) --- */
         :root {
@@ -27,7 +27,7 @@
             --tile-2-bg: linear-gradient(135deg, #ffffff 0%, #dcdcdc 100%);
             --tile-2-text: #cfa942;
 
-            --accent-color: #4ade80; /* Verde mensajes */
+            --accent-color: #4ade80; /* Verde mensajes/botones */
         }
 
         /* --- TEMA MADERA (EBANISTA) --- */
@@ -180,6 +180,7 @@
 
         /* MINI GRID */
         .preview-container { text-align: center; }
+        .preview-label { margin-bottom: 5px; color: #ddd; font-size: 0.9rem; }
         .mini-grid {
             display: grid;
             grid-template-columns: repeat(4, 25px);
@@ -209,10 +210,10 @@
                         inset 0 -5px 10px rgba(0,0,0,0.2), 
                         inset 0 5px 10px rgba(255,255,255,0.2);
             border: 2px solid var(--frame-border);
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, border-color 0.3s;
+            display: inline-block; /* Evita colapsos */
         }
         
-        /* Ajuste específico para Neon */
         [data-theme="neon"] .game-frame {
             box-shadow: 0 0 20px var(--frame-border), inset 0 0 20px var(--frame-border);
         }
@@ -246,19 +247,18 @@
             transition: transform 0.1s, background 0.3s, color 0.3s;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
             box-sizing: border-box;
+            user-select: none;
         }
 
-        /* Ajuste específico para Neon (brillo en fichas) */
         [data-theme="neon"] .tile {
             border: 1px solid currentColor;
             box-shadow: 0 0 5px currentColor;
             text-shadow: 0 0 5px currentColor;
-            font-family: 'Courier New', monospace; /* Fuente más digital */
+            font-family: 'Courier New', monospace;
         }
         
         .tile:hover { filter: brightness(1.15); transform: scale(0.97); }
 
-        /* APLICACIÓN DE VARIABLES DE TEMA A LAS FICHAS */
         .tile.red { 
             background: var(--tile-1-bg); 
             color: var(--tile-1-text);
@@ -390,7 +390,7 @@
     <footer class="game-footer">
         <p>Diseñado y Desarrollado por <span class="footer-highlight">DanKing92</span></p>
         <p>Con asistencia técnica de <span class="footer-highlight">IA de Google</span></p>
-        <p>© 2025 Proyecto Personal</p>
+        <p>© 2023 Proyecto Personal</p>
     </footer>
 
 <script>
@@ -400,7 +400,7 @@
     const messageElement = document.getElementById('message');
     const shuffleBtn = document.getElementById('shuffle-btn');
     const modeSelector = document.getElementById('mode-selector');
-    const themeSelector = document.getElementById('theme-selector'); // NUEVO
+    const themeSelector = document.getElementById('theme-selector'); 
     const movesElement = document.getElementById('moves');
     const timerElement = document.getElementById('timer');
     
@@ -536,4 +536,6 @@
                 messageElement.className = "encouraging";
             }
         } else {
-            messageElement.textContent = ""; messageElement.classNa
+            messageElement.textContent = ""; messageElement.className = "";
+        }
+    }
