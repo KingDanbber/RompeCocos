@@ -5,20 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RompeCocos</title>
     <style>
+        /* --- SISTEMA DE TEMAS (SKINS) --- */
         :root {
-            --frame-color: #F2E85C; 
-            --tile-bg-red: #9e1b32;
-            --tile-bg-white: #f0f0f0;
-            --number-color: #cfa942;
-            --bg-center: #2c3e50;
-            --bg-edge: #000000;
-            --accent-green: #4ade80;
-            --accent-orange: #FFA500;
+            /* TEMA POR DEFECTO: CLÁSICO (JUGUETE) */
+            --bg-grad-start: #2c3e50;
+            --bg-grad-end: #000000;
+            --frame-bg: #F2E85C;
+            --frame-border: #bda835;
+            --grid-bg: #2a2a2a;
+            
+            /* Colores de Fichas */
+            --tile-text: #cfa942;
+            
+            /* Par (Rojo original) */
+            --tile-1-bg: linear-gradient(135deg, #b01e38 0%, #7a0f23 100%);
+            --tile-1-text: #cfa942;
+            
+            /* Impar (Blanco original) */
+            --tile-2-bg: linear-gradient(135deg, #ffffff 0%, #dcdcdc 100%);
+            --tile-2-text: #cfa942;
+
+            --accent-color: #4ade80; /* Verde mensajes */
         }
 
+        /* TEMA: EBANISTA (MADERA) */
+        [data-theme="wood"] {
+            --bg-grad-start: #2e1e11;
+            --bg-grad-end: #0f0500;
+            --frame-bg: #5D4037;
+            --frame-border: #3E2723;
+            --grid-bg: #1a0f00;
+            
+            /* Par (Caoba) */
+            --tile-1-bg: linear-gradient(135deg, #5D4037 0%, #3E2723 100%);
+            --tile-1-text: #D7CCC8;
+            
+            /* Impar (Roble) */
+            --tile-2-bg: linear-gradient(135deg, #8D6E63 0%, #6D4C41 100%);
+            --tile-2-text: #3E2723;
+            
+            --accent-color: #D7CCC8;
+        }
+
+        /* TEMA: AJEDREZ (B&N) */
+        [data-theme="chess"] {
+            --bg-grad-start: #444;
+            --bg-grad-end: #111;
+            --frame-bg: #ffffff;
+            --frame-border: #999;
+            --grid-bg: #000000;
+            
+            /* Par (Negro) */
+            --tile-1-bg: #000000;
+            --tile-1-text: #ffffff;
+            
+            /* Impar (Blanco) */
+            --tile-2-bg: #ffffff;
+            --tile-2-text: #000000;
+            
+            --accent-color: #ffffff;
+        }
+
+        /* TEMA: CYBERPUNK (NEON) */
+        [data-theme="neon"] {
+            --bg-grad-start: #0f0014;
+            --bg-grad-end: #000000;
+            --frame-bg: #000000;
+            --frame-border: #d600ff;
+            --grid-bg: #0a0a0a;
+            
+            /* Par (Cyan) */
+            --tile-1-bg: rgba(0, 255, 255, 0.1);
+            --tile-1-text: #00ffff;
+            
+            /* Impar (Magenta) */
+            --tile-2-bg: rgba(255, 0, 255, 0.1);
+            --tile-2-text: #ff00ff;
+            
+            --accent-color: #00ffff;
+        }
+
+        /* --- ESTILOS GENERALES --- */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: radial-gradient(circle at center, var(--bg-center) 0%, var(--bg-edge) 100%);
+            background: radial-gradient(circle at center, var(--bg-grad-start) 0%, var(--bg-grad-end) 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -28,11 +98,12 @@
             color: white;
             user-select: none;
             padding: 20px;
-            box-sizing: border-box; /* Asegura que el padding no rompa el layout */
+            box-sizing: border-box;
+            transition: background 0.5s ease; /* Transición suave de fondo */
         }
 
         h1 {
-            color: var(--frame-color);
+            color: var(--accent-color); /* Color dinámico */
             margin: 0 0 15px 0;
             font-size: 2.5rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
@@ -40,7 +111,7 @@
             text-align: center;
         }
 
-        /* --- CONTROLES SUPERIORES --- */
+        /* CONTROLES */
         .top-controls {
             display: flex;
             gap: 15px;
@@ -48,25 +119,40 @@
             align-items: center;
             flex-wrap: wrap;
             justify-content: center;
+            background: rgba(0,0,0,0.3); /* Fondo semitransparente */
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        label {
+            font-size: 0.8rem;
+            color: #ccc;
+            margin-bottom: 3px;
+            font-weight: bold;
         }
 
         select {
-            padding: 10px 15px;
+            padding: 8px 12px;
             border-radius: 8px;
             background: #333;
             color: white;
-            border: 1px solid var(--frame-color);
+            border: 1px solid #555;
             font-size: 1rem;
             cursor: pointer;
             outline: none;
         }
 
-        /* --- BARRA DE ESTADÍSTICAS Y PREVIEW --- */
+        /* AREA DE JUEGO */
         .game-area {
             display: flex;
             align-items: flex-start;
             gap: 30px;
-            /* Añadimos un margen inferior para separar del footer */
             margin-bottom: 30px; 
         }
 
@@ -87,7 +173,7 @@
         }
 
         .stat-label { color: #aaa; font-size: 0.9rem; }
-        .stat-value { color: var(--frame-color); font-size: 1.5rem; font-weight: bold; display: block; }
+        .stat-value { color: var(--accent-color); font-size: 1.5rem; font-weight: bold; display: block; }
 
         /* MINI PREVIEW */
         .preview-container { text-align: center; }
@@ -105,28 +191,29 @@
         }
 
         .mini-tile {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 10px;
-            font-weight: bold;
-            color: #333;
-            border-radius: 1px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 10px; font-weight: bold; border-radius: 1px;
+            width: 100%; height: 100%;
         }
-        .mini-tile.red { background: var(--tile-bg-red); color: white; }
-        .mini-tile.white { background: var(--tile-bg-white); }
+        /* Colores dinámicos para el mini grid */
+        .mini-tile.red { background: var(--tile-1-bg); color: var(--tile-1-text); }
+        .mini-tile.white { background: var(--tile-2-bg); color: var(--tile-2-text); }
         .mini-tile.empty { background: transparent; }
 
-        /* --- TABLERO PRINCIPAL --- */
+
+        /* TABLERO PRINCIPAL */
         .game-frame {
-            background-color: var(--frame-color);
+            background-color: var(--frame-bg); /* Dinámico */
             padding: 15px;
             border-radius: 12px;
-            box-shadow: 
-                0 20px 50px rgba(0,0,0,0.5),
-                inset 0 -5px 10px rgba(0,0,0,0.2),
-                inset 0 5px 10px rgba(255,255,255,0.4);
-            border: 1px solid #bda835;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 -5px 10px rgba(0,0,0,0.2), inset 0 5px 10px rgba(255,255,255,0.2);
+            border: 2px solid var(--frame-border);
+            transition: background-color 0.3s;
+        }
+        
+        /* Efecto especial para Neon */
+        [data-theme="neon"] .game-frame {
+            box-shadow: 0 0 20px var(--frame-border), inset 0 0 20px var(--frame-border);
         }
 
         .grid-container {
@@ -134,7 +221,7 @@
             grid-template-columns: repeat(4, 80px);
             grid-template-rows: repeat(4, 80px);
             gap: 4px;
-            background-color: #2a2a2a; 
+            background-color: var(--grid-bg); 
             padding: 4px;
             border-radius: 4px;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
@@ -149,33 +236,45 @@
             font-size: 40px;
             font-family: "Times New Roman", serif;
             font-weight: 900;
-            color: var(--number-color);
             cursor: pointer;
             border-radius: 2px;
-            box-shadow: 
-                inset 2px 2px 5px rgba(255,255,255,0.4),
-                inset -2px -2px 5px rgba(0,0,0,0.4),
-                2px 2px 4px rgba(0,0,0,0.4);
+            box-shadow: inset 2px 2px 5px rgba(255,255,255,0.2), inset -2px -2px 5px rgba(0,0,0,0.4), 2px 2px 4px rgba(0,0,0,0.4);
             transition: transform 0.1s;
             text-shadow: 1px 1px 0px rgba(0,0,0,0.8);
             box-sizing: border-box;
         }
         
+        /* Estilos específicos para Neon en las fichas */
+        [data-theme="neon"] .tile {
+            border: 1px solid currentColor;
+            box-shadow: 0 0 5px currentColor;
+            text-shadow: 0 0 5px currentColor;
+            font-family: 'Courier New', monospace;
+        }
+        
         .tile:hover { filter: brightness(1.15); transform: scale(0.97); }
-        .tile.red { background: linear-gradient(135deg, #b01e38 0%, #7a0f23 100%); }
-        .tile.white { background: linear-gradient(135deg, #ffffff 0%, #dcdcdc 100%); }
-        .tile.empty { background: transparent; box-shadow: none; cursor: default; pointer-events: none; }
+
+        /* APLICACIÓN DE COLORES DINÁMICOS */
+        .tile.red { 
+            background: var(--tile-1-bg); 
+            color: var(--tile-1-text);
+        }
+        .tile.white { 
+            background: var(--tile-2-bg); 
+            color: var(--tile-2-text);
+        }
+        .tile.empty { background: transparent; box-shadow: none; cursor: default; pointer-events: none; border: none; }
 
         .btn-main {
             padding: 12px 30px;
             font-size: 16px;
             font-weight: bold;
-            background: linear-gradient(to bottom, #F2E85C 0%, #d9cb45 100%);
+            background: var(--accent-color); /* Dinámico */
             color: #333;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(242, 232, 92, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0, 0.4);
             transition: all 0.2s;
             text-transform: uppercase;
             margin-top: 20px;
@@ -186,7 +285,7 @@
         #message {
             margin-top: 15px;
             font-weight: bold;
-            color: var(--accent-green);
+            color: var(--accent-color);
             height: 24px;
             min-height: 24px;
             font-size: 20px;
@@ -206,20 +305,19 @@
             animation: pulse 1s infinite ease-in-out;
         }
 
-        /* --- NUEVO: ESTILOS DEL FOOTER (AUTORÍA) --- */
         .game-footer {
             text-align: center;
             font-size: 0.9rem;
-            color: #aaa; /* Gris sutil */
-            margin-top: auto; /* Empuja hacia abajo si sobra espacio */
+            color: #aaa; 
+            margin-top: auto; 
             padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Línea sutil separadora */
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             width: 100%;
-            max-width: 600px; /* Que no sea demasiado ancho */
+            max-width: 600px;
         }
         
         .footer-highlight {
-            color: var(--frame-color); /* Usamos el dorado del juego para los nombres */
+            color: var(--accent-color);
             font-weight: bold;
         }
 
@@ -228,6 +326,9 @@
             .info-panel { flex-direction: row; justify-content: center; width: 100%; }
             .stats-box { padding: 5px; width: 100px; }
             .stat-value { font-size: 1.2rem; }
+            .top-controls { flex-direction: column; width: 100%; }
+            .control-group { width: 100%; }
+            select { width: 100%; }
         }
         @media (max-width: 450px) {
             .grid-container {
@@ -236,7 +337,7 @@
             }
             .tile { font-size: 32px; }
             h1 { font-size: 2rem; }
-            .game-footer { font-size: 0.8rem; } /* Footer más pequeño en móvil */
+            .game-footer { font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -245,17 +346,29 @@
     <h1>RompeCocos</h1>
 
     <div class="top-controls">
-        <label for="mode-selector">Modo de Juego:</label>
-        <select id="mode-selector">
-            <option value="horizontal">➡️ Horizontal (Clásico)</option>
-            <option value="vertical">⬇️ Vertical</option>
-            <option value="imposible">⚠️ Imposible (Inverso)</option>
-            <option value="caracol">🐌 Caracol (Espiral)</option>
-            <option value="diagonal">↗️ Diagonal</option>
-            <option value="serpiente">🐍 Serpiente</option>
-            <option value="impares_pares">🌗 Impares y Pares</option>
-            <option value="zigzag_col">⚡ Columna ZigZag</option>
-        </select>
+        <div class="control-group">
+            <label for="mode-selector">Modo de Juego:</label>
+            <select id="mode-selector">
+                <option value="horizontal">➡️ Horizontal (Clásico)</option>
+                <option value="vertical">⬇️ Vertical</option>
+                <option value="imposible">⚠️ Imposible (Inverso)</option>
+                <option value="caracol">🐌 Caracol (Espiral)</option>
+                <option value="diagonal">↗️ Diagonal</option>
+                <option value="serpiente">🐍 Serpiente</option>
+                <option value="impares_pares">🌗 Impares y Pares</option>
+                <option value="zigzag_col">⚡ Columna ZigZag</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="theme-selector">Diseño del Tablero:</label>
+            <select id="theme-selector">
+                <option value="classic">🧸 Clásico (Juguete)</option>
+                <option value="wood">🌲 Ebanista (Madera)</option>
+                <option value="chess">♟️ Ajedrez (B&N)</option>
+                <option value="neon">👾 Cyberpunk (Neon)</option>
+            </select>
+        </div>
     </div>
 
     <div class="game-area">
@@ -298,6 +411,7 @@
     const messageElement = document.getElementById('message');
     const shuffleBtn = document.getElementById('shuffle-btn');
     const modeSelector = document.getElementById('mode-selector');
+    const themeSelector = document.getElementById('theme-selector'); // NUEVA REFERENCIA
     const movesElement = document.getElementById('moves');
     const timerElement = document.getElementById('timer');
     const GRID_SIZE = 4;
@@ -520,6 +634,12 @@
             messageElement.className = "";
         }
     }
+
+    // --- NUEVO: LÓGICA DE TEMAS ---
+    // Simplemente cambia un atributo en el body. No rompe las fichas.
+    themeSelector.addEventListener('change', (e) => {
+        document.body.setAttribute('data-theme', e.target.value);
+    });
 
     function shuffleBoard() {
         messageElement.textContent = "Mezclando...";
