@@ -5,20 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RompeCocos</title>
     <style>
+        /* --- VARIABLES POR DEFECTO (TEMA CLÁSICO) --- */
         :root {
-            --frame-color: #F2E85C; 
-            --tile-bg-red: #9e1b32;
-            --tile-bg-white: #f0f0f0;
-            --number-color: #cfa942;
-            --bg-center: #2c3e50;
-            --bg-edge: #000000;
-            --accent-green: #4ade80;
-            --accent-orange: #FFA500;
+            /* Colores Generales */
+            --bg-grad-start: #2c3e50;
+            --bg-grad-end: #000000;
+            --frame-bg: #F2E85C;
+            --frame-border: #bda835;
+            --grid-bg: #2a2a2a;
+            
+            /* Fichas */
+            --tile-text: #cfa942;
+            --tile-shadow: rgba(0,0,0,0.4);
+            
+            /* Colores específicos de fichas (Pares/Impares) */
+            /* Par (Red original) */
+            --tile-1-bg: linear-gradient(135deg, #b01e38 0%, #7a0f23 100%);
+            --tile-1-text: #cfa942;
+            
+            /* Impar (White original) */
+            --tile-2-bg: linear-gradient(135deg, #ffffff 0%, #dcdcdc 100%);
+            --tile-2-text: #cfa942;
+
+            --accent-color: #4ade80; /* Verde mensajes */
         }
 
+        /* --- TEMA MADERA (EBANISTA) --- */
+        [data-theme="wood"] {
+            --bg-grad-start: #2e1e11;
+            --bg-grad-end: #0f0500;
+            --frame-bg: #5D4037; /* Madera oscura marco */
+            --frame-border: #3E2723;
+            --grid-bg: #1a0f00;
+            
+            /* Fichas imitando madera */
+            /* Par (Madera oscura/Caoba) */
+            --tile-1-bg: linear-gradient(135deg, #5D4037 0%, #3E2723 100%);
+            --tile-1-text: #D7CCC8; /* Texto claro */
+            
+            /* Impar (Madera clara/Roble) */
+            --tile-2-bg: linear-gradient(135deg, #8D6E63 0%, #6D4C41 100%);
+            --tile-2-text: #3E2723; /* Texto oscuro */
+            
+            --accent-color: #D7CCC8;
+        }
+
+        /* --- TEMA AJEDREZ (MINIMALISTA) --- */
+        [data-theme="chess"] {
+            --bg-grad-start: #444;
+            --bg-grad-end: #111;
+            --frame-bg: #ffffff;
+            --frame-border: #999;
+            --grid-bg: #000000;
+            
+            /* Par (Negro) */
+            --tile-1-bg: #000000;
+            --tile-1-text: #ffffff;
+            
+            /* Impar (Blanco) */
+            --tile-2-bg: #ffffff;
+            --tile-2-text: #000000;
+            
+            --accent-color: #ffffff;
+        }
+
+        /* --- TEMA CYBERPUNK (NEON) --- */
+        [data-theme="neon"] {
+            --bg-grad-start: #0f0014;
+            --bg-grad-end: #000000;
+            --frame-bg: #000000;
+            --frame-border: #d600ff; /* Borde Neón Rosa */
+            --grid-bg: #0a0a0a;
+            
+            /* Par (Cyan Neon) */
+            --tile-1-bg: rgba(0, 255, 255, 0.1);
+            --tile-1-text: #00ffff;
+            
+            /* Impar (Magenta Neon) */
+            --tile-2-bg: rgba(255, 0, 255, 0.1);
+            --tile-2-text: #ff00ff;
+            
+            --accent-color: #00ffff;
+        }
+
+        /* --- ESTILOS GENERALES --- */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: radial-gradient(circle at center, var(--bg-center) 0%, var(--bg-edge) 100%);
+            background: radial-gradient(circle at center, var(--bg-grad-start) 0%, var(--bg-grad-end) 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -28,11 +101,11 @@
             color: white;
             user-select: none;
             padding: 20px;
-            box-sizing: border-box; /* Asegura que el padding no rompa el layout */
+            transition: background 0.5s ease;
         }
 
         h1 {
-            color: var(--frame-color);
+            color: var(--accent-color);
             margin: 0 0 15px 0;
             font-size: 2.5rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
@@ -40,36 +113,52 @@
             text-align: center;
         }
 
-        /* --- CONTROLES SUPERIORES --- */
-        .top-controls {
+        /* CONTROLES */
+        .controls-container {
             display: flex;
+            flex-wrap: wrap;
             gap: 15px;
             margin-bottom: 20px;
-            align-items: center;
-            flex-wrap: wrap;
             justify-content: center;
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        label {
+            font-size: 0.8rem;
+            color: #ccc;
+            margin-bottom: 5px;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
         select {
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
             background: #333;
             color: white;
-            border: 1px solid var(--frame-color);
+            border: 1px solid #555;
             font-size: 1rem;
             cursor: pointer;
             outline: none;
         }
 
-        /* --- BARRA DE ESTADÍSTICAS Y PREVIEW --- */
+        /* AREA DE JUEGO */
         .game-area {
             display: flex;
             align-items: flex-start;
             gap: 30px;
-            /* Añadimos un margen inferior para separar del footer */
-            margin-bottom: 30px; 
         }
 
+        /* PANEL INFO */
         .info-panel {
             display: flex;
             flex-direction: column;
@@ -87,12 +176,10 @@
         }
 
         .stat-label { color: #aaa; font-size: 0.9rem; }
-        .stat-value { color: var(--frame-color); font-size: 1.5rem; font-weight: bold; display: block; }
+        .stat-value { color: var(--accent-color); font-size: 1.5rem; font-weight: bold; display: block; }
 
-        /* MINI PREVIEW */
+        /* MINI GRID */
         .preview-container { text-align: center; }
-        .preview-label { margin-bottom: 5px; color: #ddd; font-size: 0.9rem; }
-        
         .mini-grid {
             display: grid;
             grid-template-columns: repeat(4, 25px);
@@ -103,30 +190,31 @@
             border-radius: 4px;
             border: 1px solid #555;
         }
-
         .mini-tile {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 10px;
-            font-weight: bold;
-            color: #333;
-            border-radius: 1px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 10px; font-weight: bold; border-radius: 1px;
+            width: 100%; height: 100%;
         }
-        .mini-tile.red { background: var(--tile-bg-red); color: white; }
-        .mini-tile.white { background: var(--tile-bg-white); }
+        /* Colores dinámicos para mini grid */
+        .mini-tile.red { background: var(--tile-1-bg); color: var(--tile-1-text); }
+        .mini-tile.white { background: var(--tile-2-bg); color: var(--tile-2-text); }
         .mini-tile.empty { background: transparent; }
 
-        /* --- TABLERO PRINCIPAL --- */
+        /* TABLERO */
         .game-frame {
-            background-color: var(--frame-color);
+            background-color: var(--frame-bg);
             padding: 15px;
             border-radius: 12px;
-            box-shadow: 
-                0 20px 50px rgba(0,0,0,0.5),
-                inset 0 -5px 10px rgba(0,0,0,0.2),
-                inset 0 5px 10px rgba(255,255,255,0.4);
-            border: 1px solid #bda835;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 
+                        inset 0 -5px 10px rgba(0,0,0,0.2), 
+                        inset 0 5px 10px rgba(255,255,255,0.2);
+            border: 2px solid var(--frame-border);
+            transition: background-color 0.3s;
+        }
+        
+        /* Ajuste específico para Neon */
+        [data-theme="neon"] .game-frame {
+            box-shadow: 0 0 20px var(--frame-border), inset 0 0 20px var(--frame-border);
         }
 
         .grid-container {
@@ -134,7 +222,7 @@
             grid-template-columns: repeat(4, 80px);
             grid-template-rows: repeat(4, 80px);
             gap: 4px;
-            background-color: #2a2a2a; 
+            background-color: var(--grid-bg); 
             padding: 4px;
             border-radius: 4px;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
@@ -149,33 +237,50 @@
             font-size: 40px;
             font-family: "Times New Roman", serif;
             font-weight: 900;
-            color: var(--number-color);
             cursor: pointer;
-            border-radius: 2px;
+            border-radius: 4px;
             box-shadow: 
-                inset 2px 2px 5px rgba(255,255,255,0.4),
+                inset 2px 2px 5px rgba(255,255,255,0.2),
                 inset -2px -2px 5px rgba(0,0,0,0.4),
-                2px 2px 4px rgba(0,0,0,0.4);
-            transition: transform 0.1s;
-            text-shadow: 1px 1px 0px rgba(0,0,0,0.8);
+                2px 2px 4px rgba(0,0,0,0.3);
+            transition: transform 0.1s, background 0.3s, color 0.3s;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
             box-sizing: border-box;
+        }
+
+        /* Ajuste específico para Neon (brillo en fichas) */
+        [data-theme="neon"] .tile {
+            border: 1px solid currentColor;
+            box-shadow: 0 0 5px currentColor;
+            text-shadow: 0 0 5px currentColor;
+            font-family: 'Courier New', monospace; /* Fuente más digital */
         }
         
         .tile:hover { filter: brightness(1.15); transform: scale(0.97); }
-        .tile.red { background: linear-gradient(135deg, #b01e38 0%, #7a0f23 100%); }
-        .tile.white { background: linear-gradient(135deg, #ffffff 0%, #dcdcdc 100%); }
-        .tile.empty { background: transparent; box-shadow: none; cursor: default; pointer-events: none; }
+
+        /* APLICACIÓN DE VARIABLES DE TEMA A LAS FICHAS */
+        .tile.red { 
+            background: var(--tile-1-bg); 
+            color: var(--tile-1-text);
+        }
+        
+        .tile.white { 
+            background: var(--tile-2-bg); 
+            color: var(--tile-2-text);
+        }
+
+        .tile.empty { background: transparent; box-shadow: none; cursor: default; pointer-events: none; border: none; }
 
         .btn-main {
             padding: 12px 30px;
             font-size: 16px;
             font-weight: bold;
-            background: linear-gradient(to bottom, #F2E85C 0%, #d9cb45 100%);
-            color: #333;
+            background: var(--accent-color);
+            color: #000;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(242, 232, 92, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0, 0.4);
             transition: all 0.2s;
             text-transform: uppercase;
             margin-top: 20px;
@@ -186,48 +291,32 @@
         #message {
             margin-top: 15px;
             font-weight: bold;
-            color: var(--accent-green);
+            color: var(--accent-color);
             height: 24px;
             min-height: 24px;
             font-size: 20px;
             text-align: center;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-            transition: color 0.3s ease;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        .encouraging {
-            color: var(--accent-orange) !important;
-            text-shadow: 0 0 15px rgba(255, 165, 0, 0.6) !important;
-            animation: pulse 1s infinite ease-in-out;
         }
 
-        /* --- NUEVO: ESTILOS DEL FOOTER (AUTORÍA) --- */
+        .encouraging { animation: pulse 1s infinite ease-in-out; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+        /* FOOTER */
         .game-footer {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #aaa; /* Gris sutil */
-            margin-top: auto; /* Empuja hacia abajo si sobra espacio */
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Línea sutil separadora */
-            width: 100%;
-            max-width: 600px; /* Que no sea demasiado ancho */
+            text-align: center; font-size: 0.9rem; color: #aaa;
+            margin-top: auto; padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%; max-width: 600px;
         }
-        
-        .footer-highlight {
-            color: var(--frame-color); /* Usamos el dorado del juego para los nombres */
-            font-weight: bold;
-        }
+        .footer-highlight { color: var(--accent-color); font-weight: bold; }
 
         @media (max-width: 700px) {
-            .game-area { flex-direction: column-reverse; align-items: center; margin-bottom: 20px; }
+            .game-area { flex-direction: column-reverse; align-items: center; }
             .info-panel { flex-direction: row; justify-content: center; width: 100%; }
-            .stats-box { padding: 5px; width: 100px; }
-            .stat-value { font-size: 1.2rem; }
+            .controls-container { flex-direction: column; width: 100%; box-sizing: border-box;}
+            .control-group { width: 100%; }
+            select { width: 100%; }
         }
         @media (max-width: 450px) {
             .grid-container {
@@ -235,8 +324,6 @@
                 grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr);
             }
             .tile { font-size: 32px; }
-            h1 { font-size: 2rem; }
-            .game-footer { font-size: 0.8rem; } /* Footer más pequeño en móvil */
         }
     </style>
 </head>
@@ -244,24 +331,36 @@
 
     <h1>RompeCocos</h1>
 
-    <div class="top-controls">
-        <label for="mode-selector">Modo de Juego:</label>
-        <select id="mode-selector">
-            <option value="horizontal">➡️ Horizontal (Clásico)</option>
-            <option value="vertical">⬇️ Vertical</option>
-            <option value="imposible">⚠️ Imposible (Inverso)</option>
-            <option value="caracol">🐌 Caracol (Espiral)</option>
-            <option value="diagonal">↗️ Diagonal</option>
-            <option value="serpiente">🐍 Serpiente</option>
-            <option value="impares_pares">🌗 Impares y Pares</option>
-            <option value="zigzag_col">⚡ Columna ZigZag</option>
-        </select>
+    <div class="controls-container">
+        <div class="control-group">
+            <label for="mode-selector">Modo de Juego:</label>
+            <select id="mode-selector">
+                <option value="horizontal">➡️ Horizontal (Clásico)</option>
+                <option value="vertical">⬇️ Vertical</option>
+                <option value="imposible">⚠️ Imposible (Inverso)</option>
+                <option value="caracol">🐌 Caracol (Espiral)</option>
+                <option value="diagonal">↗️ Diagonal</option>
+                <option value="serpiente">🐍 Serpiente</option>
+                <option value="impares_pares">🌗 Impares y Pares</option>
+                <option value="zigzag_col">⚡ Columna ZigZag</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="theme-selector">Diseño del Tablero:</label>
+            <select id="theme-selector">
+                <option value="classic">🧸 Clásico (Juguete)</option>
+                <option value="wood">🌲 Ebanista (Madera)</option>
+                <option value="chess">♟️ Ajedrez (B&N)</option>
+                <option value="neon">👾 Cyberpunk (Neon)</option>
+            </select>
+        </div>
     </div>
 
     <div class="game-area">
         <div class="info-panel">
             <div class="preview-container">
-                <div class="preview-label">Meta a lograr:</div>
+                <div class="preview-label">Meta:</div>
                 <div id="mini-grid" class="mini-grid"></div>
             </div>
 
@@ -279,7 +378,9 @@
             <div class="game-frame">
                 <div id="grid" class="grid-container"></div>
             </div>
+            
             <div id="message"></div>
+            
             <div style="text-align: center;">
                 <button id="shuffle-btn" class="btn-main">Reiniciar Juego</button>
             </div>
@@ -293,79 +394,34 @@
     </footer>
 
 <script>
+    // Referencias DOM
     const gridElement = document.getElementById('grid');
     const miniGridElement = document.getElementById('mini-grid');
     const messageElement = document.getElementById('message');
     const shuffleBtn = document.getElementById('shuffle-btn');
     const modeSelector = document.getElementById('mode-selector');
+    const themeSelector = document.getElementById('theme-selector'); // NUEVO
     const movesElement = document.getElementById('moves');
     const timerElement = document.getElementById('timer');
+    
     const GRID_SIZE = 4;
 
     const MODES = {
-        horizontal: [
-            1, 2, 3, 4,
-            5, 6, 7, 8, 
-            9, 10, 11, 12, 
-            13, 14, 15, 0
-        ],
-        vertical: [
-            1, 5, 9, 13, 
-            2, 6, 10, 14, 
-            3, 7, 11, 15, 
-            4, 8, 12, 0
-        ],
-        imposible: [
-            15, 14, 13, 12, 
-            11, 10, 9, 8, 
-            7, 6, 5, 4, 
-            3, 2, 1, 0
-        ],
-        caracol: [
-            1, 2, 3, 4, 
-            12, 13, 14, 5, 
-            11, 0, 15, 6, 
-            10, 9, 8, 7
-        ],
-        diagonal: [
-            1, 3, 6, 10, 
-            2, 5, 9, 13, 
-            4, 8, 12, 15, 
-            7, 11, 14, 0
-        ],
-        serpiente: [
-            1, 2, 3, 4,
-            8, 7, 6, 5,
-            9, 10, 11, 12,
-            0, 15, 14, 13
-        ],
-        impares_pares: [
-            1, 3, 5, 7,
-            9, 11, 13, 15,
-            2, 4, 6, 8,
-            10, 12, 14, 0
-        ],
-        zigzag_col: [
-            1, 8, 9, 0,
-            2, 7, 10, 15,
-            3, 6, 11, 14,
-            4, 5, 12, 13
-        ]
+        horizontal: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0],
+        vertical: [1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 0],
+        imposible: [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0],
+        caracol: [1, 2, 3, 4, 12, 13, 14, 5, 11, 0, 15, 6, 10, 9, 8, 7],
+        diagonal: [1, 3, 6, 10, 2, 5, 9, 13, 4, 8, 12, 15, 7, 11, 14, 0],
+        serpiente: [1, 2, 3, 4, 8, 7, 6, 5, 9, 10, 11, 12, 0, 15, 14, 13],
+        impares_pares: [1, 3, 5, 7, 9, 11, 13, 15, 2, 4, 6, 8, 10, 12, 14, 0],
+        zigzag_col: [1, 8, 9, 0, 2, 7, 10, 15, 3, 6, 11, 14, 4, 5, 12, 13]
     };
 
-    const ENCOURAGEMENT_PHRASES = [
-        "¡Ya casi!", 
-        "¡Solo unos pasos más!", 
-        "¡Estás muy cerca!", 
-        "¡Venga, tú puedes!", 
-        "¡Lo tienes en la bolsa!",
-        "¡Un último esfuerzo!"
-    ];
+    const ENCOURAGEMENT_PHRASES = ["¡Ya casi!", "¡Solo unos pasos más!", "¡Estás muy cerca!", "¡Venga, tú puedes!", "¡Lo tienes en la bolsa!"];
 
     let currentModeName = 'horizontal';
     let targetState = [...MODES.horizontal];
     let gameState = [...targetState];
-
     let moves = 0;
     let timerInterval = null;
     let secondsElapsed = 0;
@@ -374,35 +430,29 @@
     let audioCtx;
     let lastEncouragementIndex = -1; 
 
+    // --- SONIDO ---
     function playSound(type) {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
+        try {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
 
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-
-        if (type === 'click') {
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.1);
-            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.1);
-        } else if (type === 'win') {
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-            osc.frequency.setValueAtTime(554, audioCtx.currentTime + 0.1);
-            osc.frequency.setValueAtTime(659, audioCtx.currentTime + 0.2);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.5);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.5);
-        }
+            if (type === 'click') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(300, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+            } else if (type === 'win') {
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.setValueAtTime(554, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.5);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+            }
+        } catch(e) {}
     }
 
+    // --- LOGICA DEL JUEGO ---
     function startTimer() {
         if (isTimerRunning) return;
         isTimerRunning = true;
@@ -417,27 +467,17 @@
         }, 1000);
     }
 
-    function stopTimer() {
-        isTimerRunning = false;
-        clearInterval(timerInterval);
-    }
+    function stopTimer() { isTimerRunning = false; clearInterval(timerInterval); }
 
     function resetStats() {
         stopTimer();
-        moves = 0;
-        secondsElapsed = 0;
-        movesElement.textContent = "0";
-        timerElement.textContent = "00:00";
-        isGameActive = true;
-        isTimerRunning = false;
-        messageElement.textContent = "";
-        messageElement.className = "";
+        moves = 0; secondsElapsed = 0;
+        movesElement.textContent = "0"; timerElement.textContent = "00:00";
+        isGameActive = true; isTimerRunning = false;
+        messageElement.textContent = ""; messageElement.className = "";
     }
 
-    function getColorClass(number) {
-        if (number === 0) return 'empty';
-        return (number % 2 === 0) ? 'red' : 'white';
-    }
+    function getColorClass(number) { return (number === 0) ? 'empty' : (number % 2 === 0 ? 'red' : 'white'); }
 
     function renderGrid() {
         gridElement.innerHTML = '';
@@ -465,102 +505,35 @@
     function handleTileClick(clickedIndex) {
         if (!isGameActive) return;
         const emptyIndex = gameState.indexOf(0);
-
         if (isAdjacent(clickedIndex, emptyIndex)) {
             if (!isTimerRunning) startTimer();
-
             [gameState[clickedIndex], gameState[emptyIndex]] = [gameState[emptyIndex], gameState[clickedIndex]];
-            
-            moves++;
-            movesElement.textContent = moves;
-            playSound('click');
-            renderGrid();
-            checkGameStatus();
+            moves++; movesElement.textContent = moves;
+            playSound('click'); renderGrid(); checkGameStatus();
         }
     }
 
     function isAdjacent(idx1, idx2) {
-        const row1 = Math.floor(idx1 / GRID_SIZE);
-        const col1 = idx1 % GRID_SIZE;
-        const row2 = Math.floor(idx2 / GRID_SIZE);
-        const col2 = idx2 % GRID_SIZE;
-        return (row1 === row2 && Math.abs(col1 - col2) === 1) || 
-               (col1 === col2 && Math.abs(row1 - row2) === 1);
+        const row1 = Math.floor(idx1 / GRID_SIZE); const col1 = idx1 % GRID_SIZE;
+        const row2 = Math.floor(idx2 / GRID_SIZE); const col2 = idx2 % GRID_SIZE;
+        return (row1 === row2 && Math.abs(col1 - col2) === 1) || (col1 === col2 && Math.abs(row1 - row2) === 1);
     }
 
     function checkGameStatus() {
         let wrongTiles = 0;
-        gameState.forEach((val, i) => {
-            if (val !== targetState[i]) wrongTiles++;
-        });
+        gameState.forEach((val, i) => { if (val !== targetState[i]) wrongTiles++; });
 
         if (wrongTiles === 0) {
-            stopTimer();
-            isGameActive = false;
+            stopTimer(); isGameActive = false;
             const prettyModeName = currentModeName.replace('_', ' ').toUpperCase();
             messageElement.textContent = `¡MODO ${prettyModeName} COMPLETADO!`;
-            messageElement.className = "";
-            messageElement.style.color = "#FFD700";
             playSound('win');
-        } 
-        else if (wrongTiles <= 4) {
+        } else if (wrongTiles <= 4) {
             if (!messageElement.classList.contains('encouraging') || Math.random() > 0.8) {
-                let randomIdx;
-                do {
-                    randomIdx = Math.floor(Math.random() * ENCOURAGEMENT_PHRASES.length);
-                } while (randomIdx === lastEncouragementIndex);
-                
+                let randomIdx; do { randomIdx = Math.floor(Math.random() * ENCOURAGEMENT_PHRASES.length); } while (randomIdx === lastEncouragementIndex);
                 lastEncouragementIndex = randomIdx;
                 messageElement.textContent = ENCOURAGEMENT_PHRASES[randomIdx];
                 messageElement.className = "encouraging";
             }
-        } 
-        else {
-            messageElement.textContent = "";
-            messageElement.className = "";
-        }
-    }
-
-    function shuffleBoard() {
-        messageElement.textContent = "Mezclando...";
-        messageElement.className = "";
-        resetStats();
-        gameState = [...targetState];
-        let emptyIdx = gameState.indexOf(0);
-
-        setTimeout(() => {
-            for (let i = 0; i < 350; i++) {
-                const possibleMoves = [];
-                const row = Math.floor(emptyIdx / GRID_SIZE);
-                const col = emptyIdx % GRID_SIZE;
-
-                if (row > 0) possibleMoves.push(emptyIdx - GRID_SIZE);
-                if (row < GRID_SIZE - 1) possibleMoves.push(emptyIdx + GRID_SIZE);
-                if (col > 0) possibleMoves.push(emptyIdx - 1);
-                if (col < GRID_SIZE - 1) possibleMoves.push(emptyIdx + 1);
-
-                const randomMoveIdx = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
-                [gameState[emptyIdx], gameState[randomMoveIdx]] = [gameState[randomMoveIdx], gameState[emptyIdx]];
-                emptyIdx = randomMoveIdx;
-            }
-            messageElement.textContent = "";
-            renderGrid();
-        }, 50);
-    }
-
-    function changeMode() {
-        currentModeName = modeSelector.value;
-        targetState = MODES[currentModeName];
-        renderMiniPreview();
-        shuffleBoard();
-    }
-
-    shuffleBtn.addEventListener('click', shuffleBoard);
-    modeSelector.addEventListener('change', changeMode);
-
-    renderMiniPreview();
-    shuffleBoard();
-
-</script>
-</body>
-</html>
+        } else {
+            messageElement.textContent = ""; messageElement.classNa
