@@ -6,61 +6,84 @@
     <title>RompeCocos</title>
     <style>
         :root {
-            /* TEMA POR DEFECTO: CLÁSICO */
+            /* TEMA POR DEFECTO: CLÁSICO (JUGUETE) */
             --bg-grad-start: #2c3e50;
             --bg-grad-end: #000000;
             --frame-bg: #F2E85C;
             --frame-border: #bda835;
             --grid-bg: #2a2a2a;
-            --tile-text: #cfa942;
-            --tile-1-bg: linear-gradient(135deg, #b01e38 0%, #7a0f23 100%);
-            --tile-1-text: #cfa942;
-            --tile-2-bg: linear-gradient(135deg, #ffffff 0%, #dcdcdc 100%);
-            --tile-2-text: #cfa942;
-            --accent-color: #4ade80;
             
+            /* EFECTO DORADO REALISTA */
+            --tile-text-color: #FFD700; /* Oro base */
+            /* Esta sombra crea el efecto 3D metálico: Brillo arriba-izq, Sombra abajo-der */
+            --tile-text-shadow: 
+                -1px -1px 1px #ffeb3b, 
+                1px 1px 1px #b8860b, 
+                1px 2px 5px rgba(0,0,0,0.6);
+            
+            /* Efecto Plástico para las fichas (borde interior) */
+            --tile-box-shadow: 
+                inset 3px 3px 6px rgba(255,255,255,0.4), 
+                inset -3px -3px 6px rgba(0,0,0,0.3), 
+                2px 2px 5px rgba(0,0,0,0.4);
+
+            --tile-1-bg: linear-gradient(135deg, #c62828 0%, #8e0000 100%); /* Rojo más profundo */
+            --tile-2-bg: linear-gradient(135deg, #ffffff 0%, #eeeeee 100%);
+            
+            --accent-color: #4ade80;
             --grid-size: 4; 
         }
 
-        /* TEMA: EBANISTA */
+        /* TEMA: EBANISTA (MADERA) */
         [data-theme="wood"] {
             --bg-grad-start: #2e1e11;
             --bg-grad-end: #0f0500;
             --frame-bg: #5D4037;
             --frame-border: #3E2723;
             --grid-bg: #1a0f00;
+            
+            /* Texto grabado en madera */
+            --tile-text-color: #eaddcf;
+            --tile-text-shadow: 1px 1px 2px rgba(0,0,0,0.8), -1px -1px 1px rgba(93, 64, 55, 0.5);
+            
+            --tile-box-shadow: inset 0 0 10px rgba(0,0,0,0.7);
+
             --tile-1-bg: linear-gradient(135deg, #5D4037 0%, #3E2723 100%);
-            --tile-1-text: #D7CCC8;
             --tile-2-bg: linear-gradient(135deg, #8D6E63 0%, #6D4C41 100%);
-            --tile-2-text: #3E2723;
             --accent-color: #D7CCC8;
         }
 
-        /* TEMA: AJEDREZ */
+        /* TEMA: AJEDREZ (PLANO) */
         [data-theme="chess"] {
             --bg-grad-start: #444;
             --bg-grad-end: #111;
             --frame-bg: #ffffff;
             --frame-border: #999;
             --grid-bg: #000000;
+            
+            --tile-text-color: #auto; /* Se define abajo */
+            --tile-text-shadow: none; /* Sin relieve */
+            --tile-box-shadow: none;  /* Plano */
+
             --tile-1-bg: #000000;
-            --tile-1-text: #ffffff;
             --tile-2-bg: #ffffff;
-            --tile-2-text: #000000;
             --accent-color: #ffffff;
         }
 
-        /* TEMA: CYBERPUNK */
+        /* TEMA: CYBERPUNK (NEON) */
         [data-theme="neon"] {
             --bg-grad-start: #0f0014;
             --bg-grad-end: #000000;
             --frame-bg: #000000;
             --frame-border: #d600ff;
             --grid-bg: #0a0a0a;
-            --tile-1-bg: rgba(0, 255, 255, 0.1);
-            --tile-1-text: #00ffff;
-            --tile-2-bg: rgba(255, 0, 255, 0.1);
-            --tile-2-text: #ff00ff;
+            
+            --tile-text-color: currentColor; /* Usa el color del borde */
+            --tile-text-shadow: 0 0 5px currentColor; /* Resplandor */
+            --tile-box-shadow: 0 0 5px currentColor, inset 0 0 10px rgba(0,0,0,0.9);
+
+            --tile-1-bg: rgba(0, 255, 255, 0.05);
+            --tile-2-bg: rgba(255, 0, 255, 0.05);
             --accent-color: #00ffff;
         }
 
@@ -70,8 +93,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Quitamos el centrado forzoso vertical en general para evitar cortes en móvil */
-            justify-content: center; 
+            justify-content: center;
             min-height: 100vh;
             margin: 0;
             color: white;
@@ -110,46 +132,24 @@
             min-width: 140px;
         }
 
-        label {
-            font-size: 0.8rem;
-            color: #ccc;
-            margin-bottom: 3px;
-            font-weight: bold;
-        }
+        label { font-size: 0.8rem; color: #ccc; margin-bottom: 3px; font-weight: bold; }
 
         select {
-            padding: 8px 12px;
-            border-radius: 8px;
-            background: #333;
-            color: white;
-            border: 1px solid #555;
-            font-size: 1rem;
-            cursor: pointer;
-            outline: none;
-            width: 100%;
+            padding: 8px 12px; border-radius: 8px; background: #333; color: white;
+            border: 1px solid #555; font-size: 1rem; cursor: pointer; outline: none; width: 100%;
         }
 
         .game-area {
-            display: flex;
-            align-items: flex-start;
-            gap: 30px;
-            margin-bottom: 30px; 
+            display: flex; align-items: flex-start; gap: 30px; margin-bottom: 30px; 
         }
 
         .info-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
+            display: flex; flex-direction: column; gap: 15px; align-items: center;
         }
 
         .stats-box {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            width: 100px; /* Un poco más compacto */
+            background: rgba(0, 0, 0, 0.4); padding: 10px; border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; width: 120px;
         }
 
         .stat-label { color: #aaa; font-size: 0.8rem; }
@@ -162,46 +162,32 @@
             display: grid;
             grid-template-columns: repeat(var(--grid-size), 1fr);
             grid-template-rows: repeat(var(--grid-size), 1fr);
-            gap: 1px;
-            background: #222;
-            padding: 2px;
-            border-radius: 4px;
-            border: 1px solid #555;
-            width: 80px; /* Más compacto para móvil */
-            height: 80px;
+            gap: 1px; background: #222; padding: 2px;
+            border-radius: 4px; border: 1px solid #555;
+            width: 80px; height: 80px;
         }
 
         .mini-tile {
             display: flex; justify-content: center; align-items: center;
-            font-size: 8px; font-weight: bold; border-radius: 1px;
-            width: 100%; height: 100%;
+            font-size: 8px; font-weight: bold; border-radius: 1px; width: 100%; height: 100%;
         }
-        .mini-tile.red { background: var(--tile-1-bg); color: var(--tile-1-text); }
-        .mini-tile.white { background: var(--tile-2-bg); color: var(--tile-2-text); }
-        .mini-tile.empty { background: transparent; }
+        .mini-tile.red { background: var(--tile-1-bg); }
+        .mini-tile.white { background: var(--tile-2-bg); }
 
         .game-frame {
-            background-color: var(--frame-bg);
-            padding: 15px;
-            border-radius: 12px;
+            background-color: var(--frame-bg); padding: 15px; border-radius: 12px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 -5px 10px rgba(0,0,0,0.2), inset 0 5px 10px rgba(255,255,255,0.2);
-            border: 2px solid var(--frame-border);
-            transition: background-color 0.3s;
+            border: 2px solid var(--frame-border); transition: background-color 0.3s;
         }
         
-        [data-theme="neon"] .game-frame {
-            box-shadow: 0 0 20px var(--frame-border), inset 0 0 20px var(--frame-border);
-        }
+        [data-theme="neon"] .game-frame { box-shadow: 0 0 20px var(--frame-border), inset 0 0 20px var(--frame-border); }
 
         .grid-container {
             display: grid;
             grid-template-columns: repeat(var(--grid-size), 80px);
             grid-template-rows: repeat(var(--grid-size), 80px);
-            gap: 4px;
-            background-color: var(--grid-bg); 
-            padding: 4px;
-            border-radius: 4px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+            gap: 4px; background-color: var(--grid-bg); padding: 4px;
+            border-radius: 4px; box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
         }
 
         .tile {
@@ -209,33 +195,38 @@
             display: flex; justify-content: center; align-items: center;
             font-size: calc(160px / var(--grid-size)); 
             font-family: "Times New Roman", serif; font-weight: 900;
-            cursor: pointer; border-radius: 2px;
-            box-shadow: inset 2px 2px 5px rgba(255,255,255,0.2), inset -2px -2px 5px rgba(0,0,0,0.4), 2px 2px 4px rgba(0,0,0,0.4);
+            cursor: pointer; border-radius: 4px; /* Un poco más redondeado como el juguete */
+            
+            /* APLICAMOS LAS VARIABLES DEL EFECTO DORADO/3D */
+            color: var(--tile-text-color);
+            text-shadow: var(--tile-text-shadow);
+            box-shadow: var(--tile-box-shadow);
+            
             transition: transform 0.1s;
-            text-shadow: 1px 1px 0px rgba(0,0,0,0.8);
             box-sizing: border-box;
         }
         
         [data-theme="neon"] .tile {
-            border: 1px solid currentColor;
-            box-shadow: 0 0 5px currentColor;
-            text-shadow: 0 0 5px currentColor;
-            font-family: 'Courier New', monospace;
+            border: 1px solid currentColor; font-family: 'Courier New', monospace;
         }
         
         .tile:hover { filter: brightness(1.15); transform: scale(0.97); }
-        .tile.red { background: var(--tile-1-bg); color: var(--tile-1-text); }
-        .tile.white { background: var(--tile-2-bg); color: var(--tile-2-text); }
+        
+        /* Ajuste especial para Ajedrez (B&N) para que se vea el texto */
+        [data-theme="chess"] .tile.red { background: var(--tile-1-bg); color: white; }
+        [data-theme="chess"] .tile.white { background: var(--tile-2-bg); color: black; }
+
+        /* Normal para el resto */
+        .tile.red { background: var(--tile-1-bg); }
+        .tile.white { background: var(--tile-2-bg); }
         .tile.empty { background: transparent; box-shadow: none; cursor: default; pointer-events: none; border: none; }
 
         .btn-main {
-            padding: 12px 30px;
-            font-size: 16px; font-weight: bold;
+            padding: 12px 30px; font-size: 16px; font-weight: bold;
             background: var(--accent-color); color: #333;
             border: none; border-radius: 50px; cursor: pointer;
             box-shadow: 0 4px 15px rgba(0,0,0, 0.4);
-            transition: all 0.2s; text-transform: uppercase;
-            margin-top: 20px;
+            transition: all 0.2s; text-transform: uppercase; margin-top: 20px;
         }
         .btn-main:hover { transform: translateY(-2px); filter: brightness(1.1); }
         .btn-main:active { transform: translateY(1px); }
@@ -257,40 +248,22 @@
         }
         .footer-highlight { color: var(--accent-color); font-weight: bold; }
 
-        /* --- RESPONSIVIDAD MÓVIL OPTIMIZADA --- */
+        /* --- RESPONSIVIDAD MÓVIL --- */
         @media (max-width: 450px) {
             .grid-container {
-                /* Ajuste dinámico para que no se salga de la pantalla */
                 grid-template-columns: repeat(var(--grid-size), 1fr);
                 grid-template-rows: repeat(var(--grid-size), 1fr);
-                width: 90vw; /* Usa el 90% del ancho de la pantalla */
-                height: 90vw; /* Mantén proporción cuadrada */
-                max-width: 350px;
-                max-height: 350px;
+                width: 90vw; height: 90vw;
+                max-width: 350px; max-height: 350px;
             }
             .tile { font-size: calc(120px / var(--grid-size)); }
             h1 { font-size: 2rem; margin-bottom: 10px; }
         }
 
         @media (max-width: 800px) {
-            /* Alineación en móvil: Arriba hacia abajo */
             body { justify-content: flex-start; padding-top: 30px; height: auto; }
-            
-            .game-area { 
-                flex-direction: column; /* Columna normal, NO reverse */
-                align-items: center; 
-                margin-bottom: 20px; 
-                gap: 20px;
-            }
-            
-            /* Panel de información (Minimapa y Stats) arriba del juego */
-            .info-panel { 
-                flex-direction: row; 
-                justify-content: center; 
-                width: 100%; 
-                gap: 15px;
-            }
-            
+            .game-area { flex-direction: column; align-items: center; margin-bottom: 20px; gap: 20px; }
+            .info-panel { flex-direction: row; justify-content: center; width: 100%; gap: 15px; }
             .top-controls { flex-direction: column; width: 100%; box-sizing: border-box; }
             .control-group { width: 100%; }
         }
@@ -319,7 +292,7 @@
         <div class="control-group">
             <label for="theme-selector">Diseño:</label>
             <select id="theme-selector">
-                <option value="classic">🧸 Clásico</option>
+                <option value="classic">🧸 Clásico (Original)</option>
                 <option value="wood">🌲 Ebanista</option>
                 <option value="chess">♟️ Ajedrez</option>
                 <option value="neon">👾 Cyberpunk</option>
