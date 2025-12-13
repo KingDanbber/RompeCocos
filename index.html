@@ -6,83 +6,110 @@
     <title>RompeCocos</title>
     <style>
         :root {
-            /* TEMA POR DEFECTO: CLÁSICO (JUGUETE) */
+            /* --- VARIABLES GENERALES Y TEMA CLÁSICO --- */
             --bg-grad-start: #2c3e50;
             --bg-grad-end: #000000;
             --frame-bg: #F2E85C;
             --frame-border: #bda835;
             --grid-bg: #2a2a2a;
             
-            /* EFECTO DORADO REALISTA */
-            --tile-text-color: #FFD700; /* Oro base */
-            --tile-text-shadow: 
-                -1px -1px 1px #ffeb3b, 
-                1px 1px 1px #b8860b, 
-                1px 2px 5px rgba(0,0,0,0.6);
-            
-            --tile-box-shadow: 
-                inset 3px 3px 6px rgba(255,255,255,0.4), 
-                inset -3px -3px 6px rgba(0,0,0,0.3), 
-                2px 2px 5px rgba(0,0,0,0.4);
+            /* Efectos Clásicos */
+            --tile-text-color: #FFD700;
+            --tile-text-shadow: -1px -1px 1px #ffeb3b, 1px 1px 1px #b8860b, 1px 2px 5px rgba(0,0,0,0.6);
+            --tile-box-shadow: inset 3px 3px 6px rgba(255,255,255,0.4), inset -3px -3px 6px rgba(0,0,0,0.3), 2px 2px 5px rgba(0,0,0,0.4);
 
             --tile-1-bg: linear-gradient(135deg, #c62828 0%, #8e0000 100%);
             --tile-2-bg: linear-gradient(135deg, #ffffff 0%, #eeeeee 100%);
-            
             --accent-color: #4ade80;
             --grid-size: 4; 
         }
 
-        /* TEMA: EBANISTA (MADERA) */
+        /* --- TEMA: EBANISTA (MADERA) --- */
         [data-theme="wood"] {
-            --bg-grad-start: #2e1e11;
-            --bg-grad-end: #0f0500;
-            --frame-bg: #5D4037;
-            --frame-border: #3E2723;
-            --grid-bg: #1a0f00;
-            
+            --bg-grad-start: #2e1e11; --bg-grad-end: #0f0500;
+            --frame-bg: #5D4037; --frame-border: #3E2723; --grid-bg: #1a0f00;
             --tile-text-color: #eaddcf;
             --tile-text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
             --tile-box-shadow: inset 0 0 10px rgba(0,0,0,0.7);
-
             --tile-1-bg: linear-gradient(135deg, #5D4037 0%, #3E2723 100%);
             --tile-2-bg: linear-gradient(135deg, #8D6E63 0%, #6D4C41 100%);
             --accent-color: #D7CCC8;
         }
 
-        /* TEMA: AJEDREZ (PLANO) */
+        /* --- TEMA: AJEDREZ --- */
         [data-theme="chess"] {
-            --bg-grad-start: #444;
-            --bg-grad-end: #111;
-            --frame-bg: #ffffff;
-            --frame-border: #999;
-            --grid-bg: #000000;
-            
-            /* Reset de efectos 3D */
-            --tile-text-color: #000; /* Color base dummy, se sobrescribe */
-            --tile-text-shadow: none;
-            --tile-box-shadow: none;
-
-            --tile-1-bg: #000000;
-            --tile-2-bg: #ffffff;
+            --bg-grad-start: #444; --bg-grad-end: #111;
+            --frame-bg: #ffffff; --frame-border: #999; --grid-bg: #000000;
+            --tile-text-color: #000; /* Dummy */
+            --tile-text-shadow: none; --tile-box-shadow: none;
+            --tile-1-bg: #000000; --tile-2-bg: #ffffff;
             --accent-color: #ffffff;
         }
 
-        /* TEMA: CYBERPUNK (NEON) */
+        /* --- TEMA: CYBERPUNK (NEON) --- */
         [data-theme="neon"] {
-            --bg-grad-start: #0f0014;
-            --bg-grad-end: #000000;
-            --frame-bg: #000000;
-            --frame-border: #d600ff;
-            --grid-bg: #0a0a0a;
-            
+            --bg-grad-start: #0f0014; --bg-grad-end: #000000;
+            --frame-bg: #000000; --frame-border: #d600ff; --grid-bg: #0a0a0a;
             --tile-text-color: currentColor;
             --tile-text-shadow: 0 0 5px currentColor;
             --tile-box-shadow: 0 0 5px currentColor, inset 0 0 10px rgba(0,0,0,0.9);
-
             --tile-1-bg: rgba(0, 255, 255, 0.05);
             --tile-2-bg: rgba(255, 0, 255, 0.05);
             --accent-color: #00ffff;
         }
+
+        /* --- NUEVO TEMA: JADE IMPERIAL --- */
+        [data-theme="jade"] {
+            --bg-grad-start: #134E5E; --bg-grad-end: #71B280; /* Degradado natural */
+            --frame-bg: #2E7D32; --frame-border: #1B5E20; --grid-bg: #003300;
+            
+            --tile-text-color: #E8F5E9;
+            --tile-text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+            /* Brillo suave de piedra pulida */
+            --tile-box-shadow: inset 0 0 15px rgba(255,255,255,0.2), 2px 2px 5px rgba(0,0,0,0.3);
+            
+            --tile-1-bg: linear-gradient(135deg, #43A047 0%, #2E7D32 100%);
+            --tile-2-bg: linear-gradient(135deg, #81C784 0%, #66BB6A 100%);
+            --accent-color: #A5D6A7;
+        }
+
+        /* --- NUEVO TEMA: METAL PESADO --- */
+        [data-theme="metal"] {
+            --bg-grad-start: #232526; --bg-grad-end: #414345;
+            --frame-bg: #B0BEC5; --frame-border: #546E7A; --grid-bg: #263238;
+            
+            --tile-text-color: #263238; /* Texto oscuro grabado */
+            /* Efecto grabado (sombra blanca abajo, oscura arriba) */
+            --tile-text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            
+            --tile-box-shadow: 
+                inset 1px 1px 0 rgba(255,255,255,0.4), 
+                inset -1px -1px 0 rgba(0,0,0,0.2),
+                2px 2px 4px rgba(0,0,0,0.5);
+            
+            --tile-1-bg: linear-gradient(135deg, #90A4AE 0%, #607D8B 100%); /* Acero azulado */
+            --tile-2-bg: linear-gradient(135deg, #CFD8DC 0%, #B0BEC5 100%); /* Aluminio */
+            --accent-color: #B0BEC5;
+        }
+
+        /* --- NUEVO TEMA: CRISTAL (GLASS) --- */
+        [data-theme="glass"] {
+            --bg-grad-start: #4facfe; --bg-grad-end: #00f2fe; /* Azul Hielo */
+            --frame-bg: rgba(255, 255, 255, 0.25); /* Semitransparente */
+            --frame-border: rgba(255, 255, 255, 0.4);
+            --grid-bg: rgba(0, 0, 0, 0.1);
+            
+            --tile-text-color: #ffffff;
+            --tile-text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            --tile-box-shadow: 
+                0 4px 6px rgba(0, 0, 0, 0.1), 
+                inset 0 0 0 1px rgba(255, 255, 255, 0.4); /* Borde fino de cristal */
+            
+            --tile-1-bg: rgba(255, 255, 255, 0.3);
+            --tile-2-bg: rgba(255, 255, 255, 0.15);
+            --accent-color: #E0F7FA;
+        }
+
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -129,7 +156,6 @@
         .preview-container { text-align: center; }
         .preview-label { margin-bottom: 5px; color: #ddd; font-size: 0.9rem; }
         
-        /* MINI GRID */
         .mini-grid {
             display: grid;
             grid-template-columns: repeat(var(--grid-size), 1fr);
@@ -142,22 +168,17 @@
         .mini-tile {
             display: flex; justify-content: center; align-items: center;
             font-size: 8px; font-weight: bold; border-radius: 1px; width: 100%; height: 100%;
-            /* AQUÍ ESTABA EL ERROR: Forzamos el color del tema */
-            color: var(--tile-text-color); 
+            color: var(--tile-text-color); /* Color dinámico para todos */
         }
         .mini-tile.red { background: var(--tile-1-bg); }
         .mini-tile.white { background: var(--tile-2-bg); }
 
-        /* Corrección específica para el Minimapa en AJEDREZ */
+        /* Correcciones de color para el MiniMapa */
         [data-theme="chess"] .mini-tile.white { color: black; }
         [data-theme="chess"] .mini-tile.red { color: white; }
-
-        /* Corrección específica para NEON en minimapa */
         [data-theme="neon"] .mini-tile.white { color: #ff00ff; }
         [data-theme="neon"] .mini-tile.red { color: #00ffff; }
 
-
-        /* TABLERO GRANDE */
         .game-frame {
             background-color: var(--frame-bg); padding: 15px; border-radius: 12px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 -5px 10px rgba(0,0,0,0.2), inset 0 5px 10px rgba(255,255,255,0.2);
@@ -165,6 +186,13 @@
         }
         
         [data-theme="neon"] .game-frame { box-shadow: 0 0 20px var(--frame-border), inset 0 0 20px var(--frame-border); }
+        
+        /* Ajuste para Glass Frame */
+        [data-theme="glass"] .game-frame {
+            backdrop-filter: blur(10px); /* Difumina lo que está detrás */
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
 
         .grid-container {
             display: grid;
@@ -173,6 +201,9 @@
             gap: 4px; background-color: var(--grid-bg); padding: 4px;
             border-radius: 4px; box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
         }
+        
+        /* Glass Grid */
+        [data-theme="glass"] .grid-container { box-shadow: none; background: transparent; }
 
         .tile {
             width: 100%; height: 100%;
@@ -181,7 +212,6 @@
             font-family: "Times New Roman", serif; font-weight: 900;
             cursor: pointer; border-radius: 4px; 
             
-            /* ESTILOS DE FICHA 3D */
             color: var(--tile-text-color);
             text-shadow: var(--tile-text-shadow);
             box-shadow: var(--tile-box-shadow);
@@ -191,17 +221,21 @@
         
         [data-theme="neon"] .tile { border: 1px solid currentColor; font-family: 'Courier New', monospace; }
         
+        /* Efecto Glass en las fichas */
+        [data-theme="glass"] .tile {
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-family: 'Segoe UI', sans-serif; /* Fuente más moderna */
+        }
+        
         .tile:hover { filter: brightness(1.15); transform: scale(0.97); }
         
-        /* Ajuste de color TEXTO para Ajedrez (B&N) */
+        /* Ajustes de Color Específicos */
         [data-theme="chess"] .tile.red { background: var(--tile-1-bg); color: white; }
         [data-theme="chess"] .tile.white { background: var(--tile-2-bg); color: black; }
-
-        /* Ajuste de color TEXTO para Neon */
         [data-theme="neon"] .tile.red { background: var(--tile-1-bg); color: #00ffff; }
         [data-theme="neon"] .tile.white { background: var(--tile-2-bg); color: #ff00ff; }
 
-        /* Normal para el resto */
         .tile.red { background: var(--tile-1-bg); }
         .tile.white { background: var(--tile-2-bg); }
         .tile.empty { background: transparent; box-shadow: none; cursor: default; pointer-events: none; border: none; }
@@ -233,7 +267,6 @@
         }
         .footer-highlight { color: var(--accent-color); font-weight: bold; }
 
-        /* --- RESPONSIVIDAD MÓVIL --- */
         @media (max-width: 450px) {
             .grid-container {
                 grid-template-columns: repeat(var(--grid-size), 1fr);
@@ -278,9 +311,12 @@
             <label for="theme-selector">Diseño:</label>
             <select id="theme-selector">
                 <option value="classic">🧸 Clásico (Original)</option>
-                <option value="wood">🌲 Ebanista</option>
-                <option value="chess">♟️ Ajedrez</option>
-                <option value="neon">👾 Cyberpunk</option>
+                <option value="wood">🌲 Ebanista (Madera)</option>
+                <option value="chess">♟️ Ajedrez (B&N)</option>
+                <option value="neon">👾 Cyberpunk (Neon)</option>
+                <option value="jade">🐉 Jade Imperial</option>
+                <option value="metal">⚙️ Metal Pesado</option>
+                <option value="glass">💎 Cristal (Transparente)</option>
             </select>
         </div>
     </div>
@@ -470,7 +506,8 @@
             miniGridElement.appendChild(tile);
         });
     }
-function handleTileClick(clickedIndex) {
+
+    function handleTileClick(clickedIndex) {
         if (!isGameActive) return;
         const emptyIndex = gameState.indexOf(0);
         if (isAdjacent(clickedIndex, emptyIndex)) {
