@@ -15,19 +15,17 @@
             
             /* EFECTO DORADO REALISTA */
             --tile-text-color: #FFD700; /* Oro base */
-            /* Esta sombra crea el efecto 3D metálico: Brillo arriba-izq, Sombra abajo-der */
             --tile-text-shadow: 
                 -1px -1px 1px #ffeb3b, 
                 1px 1px 1px #b8860b, 
                 1px 2px 5px rgba(0,0,0,0.6);
             
-            /* Efecto Plástico para las fichas (borde interior) */
             --tile-box-shadow: 
                 inset 3px 3px 6px rgba(255,255,255,0.4), 
                 inset -3px -3px 6px rgba(0,0,0,0.3), 
                 2px 2px 5px rgba(0,0,0,0.4);
 
-            --tile-1-bg: linear-gradient(135deg, #c62828 0%, #8e0000 100%); /* Rojo más profundo */
+            --tile-1-bg: linear-gradient(135deg, #c62828 0%, #8e0000 100%);
             --tile-2-bg: linear-gradient(135deg, #ffffff 0%, #eeeeee 100%);
             
             --accent-color: #4ade80;
@@ -42,10 +40,8 @@
             --frame-border: #3E2723;
             --grid-bg: #1a0f00;
             
-            /* Texto grabado en madera */
             --tile-text-color: #eaddcf;
-            --tile-text-shadow: 1px 1px 2px rgba(0,0,0,0.8), -1px -1px 1px rgba(93, 64, 55, 0.5);
-            
+            --tile-text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
             --tile-box-shadow: inset 0 0 10px rgba(0,0,0,0.7);
 
             --tile-1-bg: linear-gradient(135deg, #5D4037 0%, #3E2723 100%);
@@ -61,9 +57,10 @@
             --frame-border: #999;
             --grid-bg: #000000;
             
-            --tile-text-color: #auto; /* Se define abajo */
-            --tile-text-shadow: none; /* Sin relieve */
-            --tile-box-shadow: none;  /* Plano */
+            /* Reset de efectos 3D */
+            --tile-text-color: #000; /* Color base dummy, se sobrescribe */
+            --tile-text-shadow: none;
+            --tile-box-shadow: none;
 
             --tile-1-bg: #000000;
             --tile-2-bg: #ffffff;
@@ -78,8 +75,8 @@
             --frame-border: #d600ff;
             --grid-bg: #0a0a0a;
             
-            --tile-text-color: currentColor; /* Usa el color del borde */
-            --tile-text-shadow: 0 0 5px currentColor; /* Resplandor */
+            --tile-text-color: currentColor;
+            --tile-text-shadow: 0 0 5px currentColor;
             --tile-box-shadow: 0 0 5px currentColor, inset 0 0 10px rgba(0,0,0,0.9);
 
             --tile-1-bg: rgba(0, 255, 255, 0.05);
@@ -90,46 +87,24 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: radial-gradient(circle at center, var(--bg-grad-start) 0%, var(--bg-grad-end) 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            color: white;
-            user-select: none;
-            padding: 20px;
-            box-sizing: border-box;
-            transition: background 0.5s ease;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; margin: 0; color: white; user-select: none;
+            padding: 20px; box-sizing: border-box; transition: background 0.5s ease;
         }
 
         h1 {
-            color: var(--accent-color);
-            margin: 0 0 15px 0;
-            font-size: 2.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            letter-spacing: 2px;
-            text-align: center;
+            color: var(--accent-color); margin: 0 0 15px 0; font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8); letter-spacing: 2px; text-align: center;
         }
 
         .top-controls {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: center;
-            background: rgba(0,0,0,0.3);
-            padding: 15px;
-            border-radius: 12px;
-            max-width: 800px;
+            display: flex; gap: 15px; margin-bottom: 20px; align-items: center;
+            flex-wrap: wrap; justify-content: center; background: rgba(0,0,0,0.3);
+            padding: 15px; border-radius: 12px; max-width: 800px;
         }
 
         .control-group {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            min-width: 140px;
+            display: flex; flex-direction: column; align-items: flex-start; min-width: 140px;
         }
 
         label { font-size: 0.8rem; color: #ccc; margin-bottom: 3px; font-weight: bold; }
@@ -139,17 +114,13 @@
             border: 1px solid #555; font-size: 1rem; cursor: pointer; outline: none; width: 100%;
         }
 
-        .game-area {
-            display: flex; align-items: flex-start; gap: 30px; margin-bottom: 30px; 
-        }
+        .game-area { display: flex; align-items: flex-start; gap: 30px; margin-bottom: 30px; }
 
-        .info-panel {
-            display: flex; flex-direction: column; gap: 15px; align-items: center;
-        }
+        .info-panel { display: flex; flex-direction: column; gap: 15px; align-items: center; }
 
         .stats-box {
             background: rgba(0, 0, 0, 0.4); padding: 10px; border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; width: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; width: 120px;
         }
 
         .stat-label { color: #aaa; font-size: 0.8rem; }
@@ -158,6 +129,7 @@
         .preview-container { text-align: center; }
         .preview-label { margin-bottom: 5px; color: #ddd; font-size: 0.9rem; }
         
+        /* MINI GRID */
         .mini-grid {
             display: grid;
             grid-template-columns: repeat(var(--grid-size), 1fr);
@@ -170,10 +142,22 @@
         .mini-tile {
             display: flex; justify-content: center; align-items: center;
             font-size: 8px; font-weight: bold; border-radius: 1px; width: 100%; height: 100%;
+            /* AQUÍ ESTABA EL ERROR: Forzamos el color del tema */
+            color: var(--tile-text-color); 
         }
         .mini-tile.red { background: var(--tile-1-bg); }
         .mini-tile.white { background: var(--tile-2-bg); }
 
+        /* Corrección específica para el Minimapa en AJEDREZ */
+        [data-theme="chess"] .mini-tile.white { color: black; }
+        [data-theme="chess"] .mini-tile.red { color: white; }
+
+        /* Corrección específica para NEON en minimapa */
+        [data-theme="neon"] .mini-tile.white { color: #ff00ff; }
+        [data-theme="neon"] .mini-tile.red { color: #00ffff; }
+
+
+        /* TABLERO GRANDE */
         .game-frame {
             background-color: var(--frame-bg); padding: 15px; border-radius: 12px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 -5px 10px rgba(0,0,0,0.2), inset 0 5px 10px rgba(255,255,255,0.2);
@@ -195,26 +179,27 @@
             display: flex; justify-content: center; align-items: center;
             font-size: calc(160px / var(--grid-size)); 
             font-family: "Times New Roman", serif; font-weight: 900;
-            cursor: pointer; border-radius: 4px; /* Un poco más redondeado como el juguete */
+            cursor: pointer; border-radius: 4px; 
             
-            /* APLICAMOS LAS VARIABLES DEL EFECTO DORADO/3D */
+            /* ESTILOS DE FICHA 3D */
             color: var(--tile-text-color);
             text-shadow: var(--tile-text-shadow);
             box-shadow: var(--tile-box-shadow);
             
-            transition: transform 0.1s;
-            box-sizing: border-box;
+            transition: transform 0.1s; box-sizing: border-box;
         }
         
-        [data-theme="neon"] .tile {
-            border: 1px solid currentColor; font-family: 'Courier New', monospace;
-        }
+        [data-theme="neon"] .tile { border: 1px solid currentColor; font-family: 'Courier New', monospace; }
         
         .tile:hover { filter: brightness(1.15); transform: scale(0.97); }
         
-        /* Ajuste especial para Ajedrez (B&N) para que se vea el texto */
+        /* Ajuste de color TEXTO para Ajedrez (B&N) */
         [data-theme="chess"] .tile.red { background: var(--tile-1-bg); color: white; }
         [data-theme="chess"] .tile.white { background: var(--tile-2-bg); color: black; }
+
+        /* Ajuste de color TEXTO para Neon */
+        [data-theme="neon"] .tile.red { background: var(--tile-1-bg); color: #00ffff; }
+        [data-theme="neon"] .tile.white { background: var(--tile-2-bg); color: #ff00ff; }
 
         /* Normal para el resto */
         .tile.red { background: var(--tile-1-bg); }
@@ -485,8 +470,7 @@
             miniGridElement.appendChild(tile);
         });
     }
-
-    function handleTileClick(clickedIndex) {
+function handleTileClick(clickedIndex) {
         if (!isGameActive) return;
         const emptyIndex = gameState.indexOf(0);
         if (isAdjacent(clickedIndex, emptyIndex)) {
